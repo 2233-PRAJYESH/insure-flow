@@ -98,7 +98,7 @@
         <a href="javascript:void(0)" class="nav-item flex items-center px-4 py-3 text-white rounded-md"
           data-section="reports">
           <i class="fas fa-file-alt w-6 text-center text-xl"></i>
-          <span class="ml-3 sidebar-text">Reports</span>
+          <span class="ml-3 sidebar-text">Personal-Pipeline</span>
         </a>
         <a href="javascript:void(0)" id="pipeline-nav"
           class="nav-item flex items-center px-4 py-3 text-white rounded-md hidden" data-section="pipeline">
@@ -167,14 +167,12 @@
               <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden">
                 <a href="javascript:void(0)" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your
                   Profile</a>
+                <a href="javascript:void(0)" id="dropdown-logout-btn"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
               </div>
             </div>
 
-            <button id="header-logout-btn"
-              class="flex items-center px-3 py-2 text-gray-600 rounded-md hover:bg-gray-100 focus:outline-none">
-              <i class="fas fa-sign-out-alt mr-2"></i>
-              <span class="text-sm hidden sm:inline">Logout</span>
-            </button>
+
           </div>
         </div>
       </header>
@@ -189,80 +187,87 @@
               <button class="px-4 py-2 bg-primary text-white rounded-md hover:bg-opacity-90">
                 <i class="fas fa-plus mr-2"></i>Add Lead
               </button>
-              <button class="px-4 py-2 bg-secondary text-white rounded-md hover:bg-opacity-90">
-                <i class="fas fa-sync-alt mr-2"></i>Update Status
-              </button>
             </div>
           </div>
 
           <!-- KPI Cards -->
           <!-- CSR Dashboard Cards -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div
-              class="dashboard-card bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
-              <div class="flex items-center">
-                <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
-                  <i class="fas fa-users-line text-2xl"></i>
-                </div>
-                <div class="ml-4">
-                  <h2 class="text-sm font-medium text-gray-100">Total Leads</h2>
-                  <p class="text-2xl font-bold">124</p>
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="dashboard-card bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
-              <div class="flex items-center">
-                <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
-                  <i class="fas fa-phone-volume text-2xl"></i>
-                </div>
-                <div class="ml-4">
-                  <h2 class="text-sm font-medium text-gray-100">Follow-ups Due</h2>
-                  <p class="text-2xl font-bold">28</p>
+          <div id="csr-section-dashboard">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div
+                class="dashboard-card bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
+                    <i class="fas fa-users-line text-2xl"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h2 class="text-sm font-medium text-gray-100">Total Leads</h2>
+                    <p class="text-2xl font-bold">124</p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div
-              class="dashboard-card bg-gradient-to-br from-violet-500 to-violet-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
-              <div class="flex items-center">
-                <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
-                  <i class="fas fa-file-signature text-2xl"></i>
-                </div>
-                <div class="ml-4">
-                  <h2 class="text-sm font-medium text-gray-100">Bound Policies</h2>
-                  <p class="text-2xl font-bold">56</p>
+              <div
+                class="dashboard-card bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
+                    <i class="fas fa-phone-volume text-2xl"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h2 class="text-sm font-medium text-gray-100">Follow-ups Due</h2>
+                    <p class="text-2xl font-bold">28</p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div
-              class="dashboard-card bg-gradient-to-br from-rose-500 to-rose-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
-              <div class="flex items-center">
-                <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
-                  <i class="fas fa-bell-exclamation text-2xl"></i>
+              <div
+                class="dashboard-card bg-gradient-to-br from-violet-500 to-violet-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
+                    <i class="fas fa-file-signature text-2xl"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h2 class="text-sm font-medium text-gray-100">Bound Policies</h2>
+                    <p class="text-2xl font-bold">56</p>
+                  </div>
                 </div>
-                <div class="ml-4">
-                  <h2 class="text-sm font-medium text-gray-100">Overdue Tasks</h2>
-                  <p class="text-2xl font-bold">12</p>
+              </div>
+
+              <div
+                class="dashboard-card bg-gradient-to-br from-rose-500 to-rose-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
+                    <i class="fas fa-bell-exclamation text-2xl"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h2 class="text-sm font-medium text-gray-100">Overdue Tasks</h2>
+                    <p class="text-2xl font-bold">12</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div id="csr-section-charts" class="hidden">
             <!-- Chart -->
-            <div class="bg-white rounded-xl shadow-sm p-6 lg:col-span-1">
+            <div class="bg-white rounded-xl shadow-sm p-6 h-96">
               <h2 class="text-lg font-medium text-gray-800 mb-4">Follow-up Progress</h2>
-              <div class="h-64 relative">
+              <div class="h-full relative">
                 <canvas id="csr-followup-chart"></canvas>
               </div>
             </div>
+          </div>
 
-            <!-- Leads Table -->
-            <div class="bg-white rounded-xl shadow-sm p-6 lg:col-span-2">
-              <h2 class="text-lg font-medium text-gray-800 mb-4">Recent Leads</h2>
+          <!-- Leads Table -->
+          <div id="csr-section-reports" class="hidden">
+            <div class="bg-white rounded-xl shadow-sm p-6">
+              <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-medium text-gray-800">Recent Leads</h2>
+                <button id="reports-update-status-btn"
+                  class="px-3 py-1.5 bg-secondary text-white text-sm rounded-md hover:bg-opacity-90">
+                  <i class="fas fa-sync-alt mr-2"></i>Update Lead Status
+                </button>
+              </div>
               <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                   <thead class="bg-teal-50">
@@ -271,24 +276,24 @@
                         class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Client
                         Name</th>
                       <th scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Source
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Type
                       </th>
                       <th scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Quote
-                        Amount</th>
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Policy
+                      </th>
                       <th scope="col"
                         class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Status
                       </th>
                       <th scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Due Date
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Follow-up
                       </th>
                     </tr>
                   </thead>
                   <tbody class="bg-white divide-y divide-gray-200">
                     <tr class="hover:bg-gray-50">
                       <td class="px-6 py-4 whitespace-nowrap">Robert Johnson</td>
-                      <td class="px-6 py-4 whitespace-nowrap">Website</td>
-                      <td class="px-6 py-4 whitespace-nowrap">$2,450</td>
+                      <td class="px-6 py-4 whitespace-nowrap">New Lead</td>
+                      <td class="px-6 py-4 whitespace-nowrap">Home</td>
                       <td class="px-6 py-4 whitespace-nowrap">
                         <span
                           class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
@@ -297,8 +302,8 @@
                     </tr>
                     <tr class="hover:bg-gray-50">
                       <td class="px-6 py-4 whitespace-nowrap">Maria Garcia</td>
-                      <td class="px-6 py-4 whitespace-nowrap">Referral</td>
-                      <td class="px-6 py-4 whitespace-nowrap">$3,200</td>
+                      <td class="px-6 py-4 whitespace-nowrap">Endorsement</td>
+                      <td class="px-6 py-4 whitespace-nowrap">Auto</td>
                       <td class="px-6 py-4 whitespace-nowrap">
                         <span
                           class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
@@ -307,8 +312,8 @@
                     </tr>
                     <tr class="hover:bg-gray-50">
                       <td class="px-6 py-4 whitespace-nowrap">James Wilson</td>
-                      <td class="px-6 py-4 whitespace-nowrap">Cold Call</td>
-                      <td class="px-6 py-4 whitespace-nowrap">$1,890</td>
+                      <td class="px-6 py-4 whitespace-nowrap">Cancellation</td>
+                      <td class="px-6 py-4 whitespace-nowrap">Motorcycle</td>
                       <td class="px-6 py-4 whitespace-nowrap">
                         <span
                           class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Overdue</span>
@@ -317,8 +322,8 @@
                     </tr>
                     <tr class="hover:bg-gray-50">
                       <td class="px-6 py-4 whitespace-nowrap">Sarah Thompson</td>
-                      <td class="px-6 py-4 whitespace-nowrap">Email Campaign</td>
-                      <td class="px-6 py-4 whitespace-nowrap">$4,100</td>
+                      <td class="px-6 py-4 whitespace-nowrap">Carrier Request</td>
+                      <td class="px-6 py-4 whitespace-nowrap">Umbrella</td>
                       <td class="px-6 py-4 whitespace-nowrap">
                         <span
                           class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">New</span>
@@ -327,8 +332,8 @@
                     </tr>
                     <tr class="hover:bg-gray-50">
                       <td class="px-6 py-4 whitespace-nowrap">Michael Brown</td>
-                      <td class="px-6 py-4 whitespace-nowrap">Partner</td>
-                      <td class="px-6 py-4 whitespace-nowrap">$2,780</td>
+                      <td class="px-6 py-4 whitespace-nowrap">New Lead</td>
+                      <td class="px-6 py-4 whitespace-nowrap">Condo</td>
                       <td class="px-6 py-4 whitespace-nowrap">
                         <span
                           class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
@@ -361,83 +366,87 @@
 
           <!-- KPI Cards -->
           <!-- Admin Dashboard Cards -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-            <div
-              class="relative bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl shadow-lg p-6 text-white transform transition-all duration-300 hover:scale-105">
-              <div class="flex items-center">
-                <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
-                  <i class="fas fa-user-tie text-2xl"></i>
+          <div id="admin-section-dashboard">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+              <div
+                class="relative bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl shadow-lg p-6 text-white transform transition-all duration-300 hover:scale-105">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
+                    <i class="fas fa-user-tie text-2xl"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h2 class="text-sm font-medium text-gray-100">Total Managers</h2>
+                    <p class="text-3xl font-semibold">14</p>
+                  </div>
                 </div>
-                <div class="ml-4">
-                  <h2 class="text-sm font-medium text-gray-100">Total Managers</h2>
-                  <p class="text-3xl font-semibold">14</p>
+                <div class="absolute bottom-2 right-2 opacity-20">
+                  <i class="fas fa-user-tie text-5xl"></i>
                 </div>
               </div>
-              <div class="absolute bottom-2 right-2 opacity-20">
-                <i class="fas fa-user-tie text-5xl"></i>
-              </div>
-            </div>
 
-            <div
-              class="relative bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-2xl shadow-lg p-6 text-white transform transition-all duration-300 hover:scale-105">
-              <div class="flex items-center">
-                <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
-                  <i class="fas fa-headset text-2xl"></i>
+              <div
+                class="relative bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-2xl shadow-lg p-6 text-white transform transition-all duration-300 hover:scale-105">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
+                    <i class="fas fa-headset text-2xl"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h2 class="text-sm font-medium text-gray-100">Total CSRs</h2>
+                    <p class="text-3xl font-semibold">48</p>
+                  </div>
                 </div>
-                <div class="ml-4">
-                  <h2 class="text-sm font-medium text-gray-100">Total CSRs</h2>
-                  <p class="text-3xl font-semibold">48</p>
+                <div class="absolute bottom-2 right-2 opacity-20">
+                  <i class="fas fa-headset text-5xl"></i>
                 </div>
               </div>
-              <div class="absolute bottom-2 right-2 opacity-20">
-                <i class="fas fa-headset text-5xl"></i>
-              </div>
-            </div>
 
-            <div
-              class="relative bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl shadow-lg p-6 text-white transform transition-all duration-300 hover:scale-105">
-              <div class="flex items-center">
-                <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
-                  <i class="fas fa-diagram-project text-2xl"></i>
+              <div
+                class="relative bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl shadow-lg p-6 text-white transform transition-all duration-300 hover:scale-105">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
+                    <i class="fas fa-diagram-project text-2xl"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h2 class="text-sm font-medium text-gray-100">Active Workflows</h2>
+                    <p class="text-3xl font-semibold">36</p>
+                  </div>
                 </div>
-                <div class="ml-4">
-                  <h2 class="text-sm font-medium text-gray-100">Active Workflows</h2>
-                  <p class="text-3xl font-semibold">36</p>
+                <div class="absolute bottom-2 right-2 opacity-20">
+                  <i class="fas fa-diagram-project text-5xl"></i>
                 </div>
               </div>
-              <div class="absolute bottom-2 right-2 opacity-20">
-                <i class="fas fa-diagram-project text-5xl"></i>
-              </div>
-            </div>
 
-            <div
-              class="relative bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl shadow-lg p-6 text-white transform transition-all duration-300 hover:scale-105">
-              <div class="flex items-center">
-                <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
-                  <i class="fas fa-chart-line text-2xl"></i>
+              <div
+                class="relative bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl shadow-lg p-6 text-white transform transition-all duration-300 hover:scale-105">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
+                    <i class="fas fa-chart-line text-2xl"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h2 class="text-sm font-medium text-gray-100">Conversion %</h2>
+                    <p class="text-3xl font-semibold">64%</p>
+                  </div>
                 </div>
-                <div class="ml-4">
-                  <h2 class="text-sm font-medium text-gray-100">Conversion %</h2>
-                  <p class="text-3xl font-semibold">64%</p>
+                <div class="absolute bottom-2 right-2 opacity-20">
+                  <i class="fas fa-chart-line text-5xl"></i>
                 </div>
-              </div>
-              <div class="absolute bottom-2 right-2 opacity-20">
-                <i class="fas fa-chart-line text-5xl"></i>
               </div>
             </div>
           </div>
 
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div id="admin-section-charts" class="hidden">
             <!-- Chart -->
-            <div class="bg-white rounded-xl shadow-sm p-6 lg:col-span-1">
+            <div class="bg-white rounded-xl shadow-sm p-6 h-96">
               <h2 class="text-lg font-medium text-gray-800 mb-4">Workflow Distribution</h2>
-              <div class="h-64 relative">
+              <div class="h-full relative">
                 <canvas id="admin-workflow-chart"></canvas>
               </div>
             </div>
+          </div>
 
-            <!-- Team Performance Table -->
-            <div class="bg-white rounded-xl shadow-sm p-6 lg:col-span-2">
+          <!-- Team Performance Table -->
+          <div id="admin-section-reports" class="hidden">
+            <div class="bg-white rounded-xl shadow-sm p-6">
               <h2 class="text-lg font-medium text-gray-800 mb-4">Team Performance</h2>
               <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
@@ -647,84 +656,90 @@
 
           <!-- KPI Cards -->
           <!-- Super Admin Dashboard Cards -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div
-              class="dashboard-card bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
-              <div class="flex items-center">
-                <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
-                  <i class="fas fa-users-gear text-2xl"></i>
-                </div>
-                <div class="ml-4">
-                  <h2 class="text-sm font-medium text-gray-100">Total Users</h2>
-                  <p class="text-2xl font-bold">62</p>
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="dashboard-card bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
-              <div class="flex items-center">
-                <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
-                  <i class="fas fa-network-wired text-2xl"></i>
-                </div>
-                <div class="ml-4">
-                  <h2 class="text-sm font-medium text-gray-100">Active Workflows</h2>
-                  <p class="text-2xl font-bold">36</p>
+          <div id="superadmin-section-dashboard">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div
+                class="dashboard-card bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
+                    <i class="fas fa-users-gear text-2xl"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h2 class="text-sm font-medium text-gray-100">Total Users</h2>
+                    <p class="text-2xl font-bold">62</p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div
-              class="dashboard-card bg-gradient-to-br from-teal-500 to-teal-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
-              <div class="flex items-center">
-                <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
-                  <i class="fas fa-file-contract text-2xl"></i>
-                </div>
-                <div class="ml-4">
-                  <h2 class="text-sm font-medium text-gray-100">Bound Policies</h2>
-                  <p class="text-2xl font-bold">412</p>
+              <div
+                class="dashboard-card bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
+                    <i class="fas fa-network-wired text-2xl"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h2 class="text-sm font-medium text-gray-100">Active Workflows</h2>
+                    <p class="text-2xl font-bold">36</p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div
-              class="dashboard-card bg-gradient-to-br from-amber-500 to-amber-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
-              <div class="flex items-center">
-                <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
-                  <i class="fas fa-coins text-2xl"></i>
+              <div
+                class="dashboard-card bg-gradient-to-br from-teal-500 to-teal-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
+                    <i class="fas fa-file-contract text-2xl"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h2 class="text-sm font-medium text-gray-100">Bound Policies</h2>
+                    <p class="text-2xl font-bold">412</p>
+                  </div>
                 </div>
-                <div class="ml-4">
-                  <h2 class="text-sm font-medium text-gray-100">Total Commissions</h2>
-                  <p class="text-2xl font-bold">$128.5K</p>
+              </div>
+
+              <div
+                class="dashboard-card bg-gradient-to-br from-amber-500 to-amber-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
+                    <i class="fas fa-coins text-2xl"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h2 class="text-sm font-medium text-gray-100">Total Commissions</h2>
+                    <p class="text-2xl font-bold">$128.5K</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Charts -->
-            <div class="bg-white rounded-xl shadow-sm p-6">
-              <h2 class="text-lg font-medium text-gray-800 mb-4">Revenue Trend</h2>
-              <div class="h-64 relative">
-                <canvas id="revenue-chart"></canvas>
+          <div id="superadmin-section-charts" class="hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <!-- Charts -->
+              <div class="bg-white rounded-xl shadow-sm p-6 h-96">
+                <h2 class="text-lg font-medium text-gray-800 mb-4">Revenue Trend</h2>
+                <div class="h-full relative">
+                  <canvas id="revenue-chart"></canvas>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-xl shadow-sm p-6 h-96">
+                <h2 class="text-lg font-medium text-gray-800 mb-4">SLA Compliance</h2>
+                <div class="h-full relative">
+                  <canvas id="sla-chart"></canvas>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-xl shadow-sm p-6 h-96">
+                <h2 class="text-lg font-medium text-gray-800 mb-4">Role Activity Breakdown</h2>
+                <div class="h-full relative">
+                  <canvas id="role-activity-chart"></canvas>
+                </div>
               </div>
             </div>
+          </div>
 
-            <div class="bg-white rounded-xl shadow-sm p-6">
-              <h2 class="text-lg font-medium text-gray-800 mb-4">SLA Compliance</h2>
-              <div class="h-64 relative">
-                <canvas id="sla-chart"></canvas>
-              </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm p-6">
-              <h2 class="text-lg font-medium text-gray-800 mb-4">Role Activity Breakdown</h2>
-              <div class="h-64 relative">
-                <canvas id="role-activity-chart"></canvas>
-              </div>
-            </div>
-
-            <!-- User Activity Table -->
+          <!-- User Activity Table -->
+          <div id="superadmin-section-reports" class="hidden">
             <div class="bg-white rounded-xl shadow-sm p-6">
               <h2 class="text-lg font-medium text-gray-800 mb-4">User Activity Summary</h2>
               <div class="overflow-x-auto">
@@ -793,210 +808,211 @@
                 </table>
               </div>
             </div>
+          </div>
 
-            <!-- Pipeline Section -->
-            <div id="pipeline-section" class="space-y-6 mt-8 hidden">
-              <div class="flex justify-between items-center">
-                <h1 class="text-2xl font-bold text-gray-800">Pipeline Overview</h1>
-                <div class="space-x-2">
-                  <button class="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600">
-                    <i class="fas fa-sync-alt mr-2"></i>Refresh Pipeline
-                  </button>
-                </div>
-              </div>
-
-              <!-- Admin Workflows Section -->
-              <div class="bg-white rounded-xl shadow-sm p-6">
-                <h2 class="text-lg font-medium text-gray-800 mb-4">Admin Workflows</h2>
-                <div class="overflow-x-auto">
-                  <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-teal-50">
-                      <tr>
-                        <th scope="col"
-                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Manager
-                          Name</th>
-                        <th scope="col"
-                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">CSR
-                          Count</th>
-                        <th scope="col"
-                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Tasks
-                          Completed</th>
-                        <th scope="col"
-                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">
-                          Progress %</th>
-                        <th scope="col"
-                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">
-                          Workflow</th>
-                      </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                      <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap font-medium">Alex Morgan</td>
-                        <td class="px-6 py-4 whitespace-nowrap">12</td>
-                        <td class="px-6 py-4 whitespace-nowrap">87</td>
-                        <td class="px-6 py-4 whitespace-nowrap">78%</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <div class="w-full bg-gray-200 rounded-full h-2.5">
-                            <div class="bg-green-600 h-2.5 rounded-full progress-bar" style="width: 78%"></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap font-medium">Jessica Wu</td>
-                        <td class="px-6 py-4 whitespace-nowrap">8</td>
-                        <td class="px-6 py-4 whitespace-nowrap">64</td>
-                        <td class="px-6 py-4 whitespace-nowrap">92%</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <div class="w-full bg-gray-200 rounded-full h-2.5">
-                            <div class="bg-green-600 h-2.5 rounded-full progress-bar" style="width: 92%"></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap font-medium">David Kim</td>
-                        <td class="px-6 py-4 whitespace-nowrap">10</td>
-                        <td class="px-6 py-4 whitespace-nowrap">42</td>
-                        <td class="px-6 py-4 whitespace-nowrap">45%</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <div class="w-full bg-gray-200 rounded-full h-2.5">
-                            <div class="bg-yellow-500 h-2.5 rounded-full progress-bar" style="width: 45%"></div>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <!-- CSR Workflows Section -->
-              <div class="bg-white rounded-xl shadow-sm p-6">
-                <h2 class="text-lg font-medium text-gray-800 mb-4">CSR Leads Pipeline</h2>
-                <div class="overflow-x-auto">
-                  <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-teal-50">
-                      <tr>
-                        <th scope="col"
-                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Client
-                          Name</th>
-                        <th scope="col"
-                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Source
-                        </th>
-                        <th scope="col"
-                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Quote
-                          Amount</th>
-                        <th scope="col"
-                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Status
-                        </th>
-                        <th scope="col"
-                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">CSR
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                      <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap">Robert Johnson</td>
-                        <td class="px-6 py-4 whitespace-nowrap">Website</td>
-                        <td class="px-6 py-4 whitespace-nowrap">$2,450</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <span
-                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">Maria Garcia</td>
-                      </tr>
-                      <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap">Sarah Thompson</td>
-                        <td class="px-6 py-4 whitespace-nowrap">Email Campaign</td>
-                        <td class="px-6 py-4 whitespace-nowrap">$4,100</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <span
-                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">New</span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">John Smith</td>
-                      </tr>
-                      <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap">James Wilson</td>
-                        <td class="px-6 py-4 whitespace-nowrap">Cold Call</td>
-                        <td class="px-6 py-4 whitespace-nowrap">$1,890</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <span
-                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Overdue</span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">Michael Brown</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+          <!-- Pipeline Section -->
+          <div id="pipeline-section" class="space-y-6 mt-8 hidden">
+            <div class="flex justify-between items-center">
+              <h1 class="text-2xl font-bold text-gray-800">Pipeline Overview</h1>
+              <div class="space-x-2">
+                <button class="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600">
+                  <i class="fas fa-sync-alt mr-2"></i>Refresh Pipeline
+                </button>
               </div>
             </div>
 
-            <!-- Commission Section -->
-            <div id="commission-section" class="space-y-6 mt-8 hidden">
-              <div class="flex justify-between items-center">
-                <h1 class="text-2xl font-bold text-gray-800">Policy Commissions</h1>
-                <div class="space-x-2">
-                  <button class="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600">
-                    <i class="fas fa-download mr-2"></i>Export Report
-                  </button>
-                </div>
-              </div>
-
-              <!-- Commission Table -->
-              <div class="bg-white rounded-xl shadow-sm p-6">
-                <h2 class="text-lg font-medium text-gray-800 mb-4">Commission Breakdown</h2>
-                <div class="overflow-x-auto">
-                  <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-teal-50">
-                      <tr>
-                        <th scope="col"
-                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Policy
-                          ID</th>
-                        <th scope="col"
-                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Client
-                          Name</th>
-                        <th scope="col"
-                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">
-                          Commission %</th>
-                        <th scope="col"
-                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Date
-                          Issued</th>
-                      </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                      <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap">POL-2023-0045</td>
-                        <td class="px-6 py-4 whitespace-nowrap">Robert Johnson</td>
-                        <td class="px-6 py-4 whitespace-nowrap">12.5%</td>
-                        <td class="px-6 py-4 whitespace-nowrap">Oct 12, 2023</td>
-                      </tr>
-                      <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap">POL-2023-0078</td>
-                        <td class="px-6 py-4 whitespace-nowrap">Maria Garcia</td>
-                        <td class="px-6 py-4 whitespace-nowrap">15.0%</td>
-                        <td class="px-6 py-4 whitespace-nowrap">Oct 15, 2023</td>
-                      </tr>
-                      <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap">POL-2023-0102</td>
-                        <td class="px-6 py-4 whitespace-nowrap">James Wilson</td>
-                        <td class="px-6 py-4 whitespace-nowrap">8.75%</td>
-                        <td class="px-6 py-4 whitespace-nowrap">Oct 18, 2023</td>
-                      </tr>
-                      <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap">POL-2023-0113</td>
-                        <td class="px-6 py-4 whitespace-nowrap">Sarah Thompson</td>
-                        <td class="px-6 py-4 whitespace-nowrap">10.25%</td>
-                        <td class="px-6 py-4 whitespace-nowrap">Oct 21, 2023</td>
-                      </tr>
-                      <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap">POL-2023-0129</td>
-                        <td class="px-6 py-4 whitespace-nowrap">Michael Brown</td>
-                        <td class="px-6 py-4 whitespace-nowrap">14.5%</td>
-                        <td class="px-6 py-4 whitespace-nowrap">Oct 25, 2023</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+            <!-- Admin Workflows Section -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+              <h2 class="text-lg font-medium text-gray-800 mb-4">Admin Workflows</h2>
+              <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                  <thead class="bg-teal-50">
+                    <tr>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Manager
+                        Name</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">CSR
+                        Count</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Tasks
+                        Completed</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">
+                        Progress %</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">
+                        Workflow</th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200">
+                    <tr class="hover:bg-gray-50">
+                      <td class="px-6 py-4 whitespace-nowrap font-medium">Alex Morgan</td>
+                      <td class="px-6 py-4 whitespace-nowrap">12</td>
+                      <td class="px-6 py-4 whitespace-nowrap">87</td>
+                      <td class="px-6 py-4 whitespace-nowrap">78%</td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                          <div class="bg-green-600 h-2.5 rounded-full progress-bar" style="width: 78%"></div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                      <td class="px-6 py-4 whitespace-nowrap font-medium">Jessica Wu</td>
+                      <td class="px-6 py-4 whitespace-nowrap">8</td>
+                      <td class="px-6 py-4 whitespace-nowrap">64</td>
+                      <td class="px-6 py-4 whitespace-nowrap">92%</td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                          <div class="bg-green-600 h-2.5 rounded-full progress-bar" style="width: 92%"></div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                      <td class="px-6 py-4 whitespace-nowrap font-medium">David Kim</td>
+                      <td class="px-6 py-4 whitespace-nowrap">10</td>
+                      <td class="px-6 py-4 whitespace-nowrap">42</td>
+                      <td class="px-6 py-4 whitespace-nowrap">45%</td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                          <div class="bg-yellow-500 h-2.5 rounded-full progress-bar" style="width: 45%"></div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
+
+            <!-- CSR Workflows Section -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+              <h2 class="text-lg font-medium text-gray-800 mb-4">CSR Leads Pipeline</h2>
+              <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                  <thead class="bg-teal-50">
+                    <tr>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Client
+                        Name</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Source
+                      </th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Quote
+                        Amount</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Status
+                      </th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">CSR
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200">
+                    <tr class="hover:bg-gray-50">
+                      <td class="px-6 py-4 whitespace-nowrap">Robert Johnson</td>
+                      <td class="px-6 py-4 whitespace-nowrap">Website</td>
+                      <td class="px-6 py-4 whitespace-nowrap">$2,450</td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span
+                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">Maria Garcia</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                      <td class="px-6 py-4 whitespace-nowrap">Sarah Thompson</td>
+                      <td class="px-6 py-4 whitespace-nowrap">Email Campaign</td>
+                      <td class="px-6 py-4 whitespace-nowrap">$4,100</td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span
+                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">New</span>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">John Smith</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                      <td class="px-6 py-4 whitespace-nowrap">James Wilson</td>
+                      <td class="px-6 py-4 whitespace-nowrap">Cold Call</td>
+                      <td class="px-6 py-4 whitespace-nowrap">$1,890</td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span
+                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Overdue</span>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">Michael Brown</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Commission Section -->
+          <div id="commission-section" class="space-y-6 mt-8 hidden">
+            <div class="flex justify-between items-center">
+              <h1 class="text-2xl font-bold text-gray-800">Policy Commissions</h1>
+              <div class="space-x-2">
+                <button class="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600">
+                  <i class="fas fa-download mr-2"></i>Export Report
+                </button>
+              </div>
+            </div>
+
+            <!-- Commission Table -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+              <h2 class="text-lg font-medium text-gray-800 mb-4">Commission Breakdown</h2>
+              <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                  <thead class="bg-teal-50">
+                    <tr>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Policy
+                        ID</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Client
+                        Name</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">
+                        Commission %</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Date
+                        Issued</th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200">
+                    <tr class="hover:bg-gray-50">
+                      <td class="px-6 py-4 whitespace-nowrap">POL-2023-0045</td>
+                      <td class="px-6 py-4 whitespace-nowrap">Robert Johnson</td>
+                      <td class="px-6 py-4 whitespace-nowrap">12.5%</td>
+                      <td class="px-6 py-4 whitespace-nowrap">Oct 12, 2023</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                      <td class="px-6 py-4 whitespace-nowrap">POL-2023-0078</td>
+                      <td class="px-6 py-4 whitespace-nowrap">Maria Garcia</td>
+                      <td class="px-6 py-4 whitespace-nowrap">15.0%</td>
+                      <td class="px-6 py-4 whitespace-nowrap">Oct 15, 2023</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                      <td class="px-6 py-4 whitespace-nowrap">POL-2023-0102</td>
+                      <td class="px-6 py-4 whitespace-nowrap">James Wilson</td>
+                      <td class="px-6 py-4 whitespace-nowrap">8.75%</td>
+                      <td class="px-6 py-4 whitespace-nowrap">Oct 18, 2023</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                      <td class="px-6 py-4 whitespace-nowrap">POL-2023-0113</td>
+                      <td class="px-6 py-4 whitespace-nowrap">Sarah Thompson</td>
+                      <td class="px-6 py-4 whitespace-nowrap">10.25%</td>
+                      <td class="px-6 py-4 whitespace-nowrap">Oct 21, 2023</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                      <td class="px-6 py-4 whitespace-nowrap">POL-2023-0129</td>
+                      <td class="px-6 py-4 whitespace-nowrap">Michael Brown</td>
+                      <td class="px-6 py-4 whitespace-nowrap">14.5%</td>
+                      <td class="px-6 py-4 whitespace-nowrap">Oct 25, 2023</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
       </main>
 
       <!-- Add version label footer -->
@@ -1012,48 +1028,80 @@
     <div class="modal">
       <h2 class="text-xl font-bold mb-4">Add New Lead</h2>
       <form id="add-lead-form" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="lead-date" class="block text-sm font-medium text-gray-700">Date</label>
+            <input type="date" id="lead-date" name="lead-date"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
+              required>
+          </div>
+          <div>
+            <label for="client-name" class="block text-sm font-medium text-gray-700">Client Name</label>
+            <input type="text" id="client-name" name="client-name"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
+              required>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="request-type" class="block text-sm font-medium text-gray-700">Request Type</label>
+            <select id="request-type" name="request-type"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <option value="New Lead">New Lead</option>
+              <option value="Endorsement">Endorsement</option>
+              <option value="Cancellation">Cancellation</option>
+              <option value="Carrier Request">Carrier Request</option>
+            </select>
+          </div>
+          <div>
+            <label for="policy-type" class="block text-sm font-medium text-gray-700">Policy Type</label>
+            <select id="policy-type" name="policy-type"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <option value="Home">Home</option>
+              <option value="Auto">Auto</option>
+              <option value="Condo">Condo</option>
+              <option value="Landlord Home/Condo">Landlord Home/Condo</option>
+              <option value="Motorcycle">Motorcycle</option>
+              <option value="Umbrella">Umbrella</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="effective-date" class="block text-sm font-medium text-gray-700">Effective Date</label>
+            <input type="date" id="effective-date" name="effective-date"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
+              required>
+          </div>
+          <div>
+            <label for="follow-up-date" class="block text-sm font-medium text-gray-700">Follow-up Date</label>
+            <input type="date" id="follow-up-date" name="follow-up-date"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
+              required>
+          </div>
+        </div>
+
         <div>
-          <label for="client-name" class="block text-sm font-medium text-gray-700">Client Name</label>
-          <input type="text" id="client-name" name="client-name"
+          <label for="assigned-csr" class="block text-sm font-medium text-gray-700">Assigned CSR</label>
+          <input type="text" id="assigned-csr" name="assigned-csr"
             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
-            required>
+            placeholder="CSR Assigned by Team Leader/Admin/Super Admin">
         </div>
 
         <div>
-          <label for="lead-source" class="block text-sm font-medium text-gray-700">Source</label>
-          <select id="lead-source" name="lead-source"
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
-            <option value="Website">Website</option>
-            <option value="Referral">Referral</option>
-            <option value="Cold Call">Cold Call</option>
-            <option value="Email Campaign">Email Campaign</option>
-            <option value="Partner">Partner</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="quote-amount" class="block text-sm font-medium text-gray-700">Quote Amount</label>
-          <input type="text" id="quote-amount" name="quote-amount"
+          <label for="referral" class="block text-sm font-medium text-gray-700">Referral</label>
+          <input type="text" id="referral" name="referral"
             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
-            required>
+            placeholder="Referral Name (Optional)">
         </div>
 
         <div>
-          <label for="lead-status" class="block text-sm font-medium text-gray-700">Status</label>
-          <select id="lead-status" name="lead-status"
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
-            <option value="New">New</option>
-            <option value="Active">Active</option>
-            <option value="Pending">Pending</option>
-            <option value="Overdue">Overdue</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="due-date" class="block text-sm font-medium text-gray-700">Due Date</label>
-          <input type="date" id="due-date" name="due-date"
+          <label for="notes" class="block text-sm font-medium text-gray-700">Notes/Details</label>
+          <textarea id="notes" name="notes" rows="3"
             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
-            required>
+            placeholder="Important updates..."></textarea>
         </div>
 
         <div class="flex justify-end space-x-3 pt-4">
@@ -1090,11 +1138,156 @@
           <label for="new-status" class="block text-sm font-medium text-gray-700">New Status</label>
           <select id="new-status" name="new-status"
             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
-            <option value="New">New</option>
-            <option value="Active">Active</option>
-            <option value="Pending">Pending</option>
-            <option value="Overdue">Overdue</option>
+            <option value="" selected disabled>Select status...</option>
+            <option value="Quoting in Progress">Quoting in Progress</option>
+            <option value="Quote has been Emailed">Quote has been Emailed</option>
+            <option value="Consent Letter Sent">Consent Letter Sent</option>
+            <option value="Completed">Completed</option>
+            <option value="Did not bind">Did not bind</option>
           </select>
+        </div>
+
+        <!-- Dynamic Fields Container -->
+        <div id="status-dynamic-fields" class="space-y-4 pt-2 border-t border-gray-100">
+
+          <!-- Quoting in Progress Fields -->
+          <div id="fields-quoting-in-progress" class="status-fields hidden space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Target Completion Date</label>
+              <input type="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div class="flex items-center">
+              <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+              <label class="ml-2 block text-sm text-gray-900">Saved all client’s documents in FileCenter?</label>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Received all required info/docs?</label>
+              <select class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Notes/Details</label>
+              <textarea rows="2"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"></textarea>
+            </div>
+          </div>
+
+          <!-- Quote Emailed Fields -->
+          <div id="fields-quote-emailed" class="status-fields hidden space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Follow-up Date</label>
+              <input type="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div class="flex items-center">
+              <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+              <label class="ml-2 block text-sm text-gray-900">Have you finalized the quote?</label>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Which carrier quote are you sending?</label>
+              <input type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">What is the quoted premium?</label>
+              <input type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Notes/Details</label>
+              <textarea rows="2"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"></textarea>
+            </div>
+          </div>
+
+          <!-- Consent Letter Sent Fields -->
+          <div id="fields-consent-letter" class="status-fields hidden space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Follow-up Date</label>
+              <input type="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Payment Method</label>
+              <select class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                <option>CC</option>
+                <option>ACH</option>
+                <option>ESCROW</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Payment Frequency</label>
+              <select class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                <option>Full</option>
+                <option>2-Pay</option>
+                <option>4-Pay</option>
+                <option>Monthly</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Notes/Details</label>
+              <textarea rows="2"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"></textarea>
+            </div>
+          </div>
+
+          <!-- Completed Fields -->
+          <div id="fields-completed" class="status-fields hidden space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Policy Number</label>
+              <input type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Bound Premium</label>
+                <input type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Expected Commission</label>
+                <input type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Policy documents saved in EZLynx & File
+                Center?</label>
+              <select class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Sent policy documents to client?</label>
+              <select class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Notes/Details</label>
+              <textarea rows="2"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"></textarea>
+            </div>
+          </div>
+
+          <!-- Did Not Bind Fields -->
+          <div id="fields-did-not-bind" class="status-fields hidden space-y-3">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Renewal Date</label>
+                <input type="date" id="renewal-date-input"
+                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700">X-date (60 days prior)</label>
+                <input type="date" id="x-date-input"
+                  class="mt-1 block w-full px-3 py-2 border-gray-300 rounded-md shadow-sm bg-gray-50" readonly>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Notes/Details</label>
+              <textarea rows="2"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"></textarea>
+            </div>
+          </div>
+
         </div>
 
         <div class="flex justify-end space-x-3 pt-4">

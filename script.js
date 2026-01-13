@@ -72,10 +72,10 @@ document.addEventListener('DOMContentLoaded', function () {
   // Handle logout (update to include header logout button)
   logoutBtn.addEventListener('click', handleLogout);
 
-  // Add event listener for the new header logout button
-  const headerLogoutBtn = document.getElementById('header-logout-btn');
-  if (headerLogoutBtn) {
-    headerLogoutBtn.addEventListener('click', handleLogout);
+  // Add event listener for the new dropdown logout button
+  const dropdownLogoutBtn = document.getElementById('dropdown-logout-btn');
+  if (dropdownLogoutBtn) {
+    dropdownLogoutBtn.addEventListener('click', handleLogout);
   }
 
   // Handle profile dropdown
@@ -110,60 +110,39 @@ document.addEventListener('DOMContentLoaded', function () {
       // Add active class to clicked item
       this.classList.add('active');
 
-      // Handle navigation based on data-section
       const section = this.getAttribute('data-section');
-      if (section === 'dashboard') {
-        // Just show the dashboard, no scrolling needed
-        document.getElementById('pipeline-section')?.classList.add('hidden');
-        document.getElementById('commission-section')?.classList.add('hidden');
-        document.getElementById('in-progress-section').style.display = 'none';
 
-        // Show the appropriate dashboard based on role
-        if (currentRole === 'admin') {
-          adminDashboard.style.display = 'block';
-        }
-      } else if (section === 'charts') {
-        // Scroll to charts section based on current role
-        document.getElementById('pipeline-section')?.classList.add('hidden');
-        document.getElementById('commission-section')?.classList.add('hidden');
-        document.getElementById('in-progress-section').style.display = 'none';
+      // Hide special full-page sections by default
+      const pipelineSection = document.getElementById('pipeline-section');
+      const commissionSection = document.getElementById('commission-section');
+      const inProgressSection = document.getElementById('in-progress-section');
 
-        // Show the appropriate dashboard based on role
-        if (currentRole === 'admin') {
-          adminDashboard.style.display = 'block';
-        }
+      if (pipelineSection) pipelineSection.classList.add('hidden');
+      if (commissionSection) commissionSection.classList.add('hidden');
+      if (inProgressSection) inProgressSection.style.display = 'none';
 
-        scrollToCharts();
-      } else if (section === 'reports') {
-        // Scroll to reports/table section based on current role
-        document.getElementById('pipeline-section')?.classList.add('hidden');
-        document.getElementById('commission-section')?.classList.add('hidden');
-        document.getElementById('in-progress-section').style.display = 'none';
+      // Standard navigation
+      if (['dashboard', 'charts', 'reports'].includes(section)) {
+        // Ensure the main dashboard container is visible
+        if (currentRole === 'csr') csrDashboard.style.display = 'block';
+        if (currentRole === 'admin') adminDashboard.style.display = 'block';
+        if (currentRole === 'superadmin') superadminDashboard.style.display = 'block';
 
-        // Show the appropriate dashboard based on role
-        if (currentRole === 'admin') {
-          adminDashboard.style.display = 'block';
-        }
-
-        scrollToReports();
-      } else if (section === 'in-progress' && currentRole === 'admin') {
-        // Show in-progress section, hide admin dashboard
+        updateDashboardView(currentRole, section);
+      }
+      // Special Sections
+      else if (section === 'in-progress' && currentRole === 'admin') {
         adminDashboard.style.display = 'none';
-        document.getElementById('in-progress-section').style.display = 'block';
+        inProgressSection.style.display = 'block';
       } else if (section === 'pipeline' && currentRole === 'superadmin') {
-
-        // Show the pipeline section, hide commission section
-        document.getElementById('pipeline-section')?.classList.remove('hidden');
-        document.getElementById('commission-section')?.classList.add('hidden');
+        // Pipeline is inside superadmin dashboard container but separate from dashboard/charts/reports
+        superadminDashboard.style.display = 'block';
+        updateDashboardView(currentRole, 'none'); // Hide standard sections
+        pipelineSection.classList.remove('hidden');
       } else if (section === 'commission' && currentRole === 'superadmin') {
-        // Show the commission section, hide pipeline section
-        document.getElementById('commission-section')?.classList.remove('hidden');
-        document.getElementById('pipeline-section')?.classList.add('hidden');
-        // Scroll to commission table
-        const commissionTable = document.querySelector('#commission-section table');
-        if (commissionTable) {
-          commissionTable.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        superadminDashboard.style.display = 'block';
+        updateDashboardView(currentRole, 'none'); // Hide standard sections
+        commissionSection.classList.remove('hidden');
       }
     });
   });
@@ -195,13 +174,15 @@ document.addEventListener('DOMContentLoaded', function () {
     e.preventDefault();
 
     const clientName = document.getElementById('client-name').value;
-    const source = document.getElementById('lead-source').value;
-    const amount = document.getElementById('quote-amount').value;
-    const status = document.getElementById('lead-status').value;
-    const dueDate = formatDate(document.getElementById('due-date').value);
+    const requestType = document.getElementById('request-type').value;
+    const policyType = document.getElementById('policy-type').value;
+    const followUpDate = formatDate(document.getElementById('follow-up-date').value);
+
+    // Status is not in the form but we can infer it or default it
+    const status = 'New';
 
     // Add new row to the leads table
-    addLeadToTable(clientName, source, amount, status, dueDate);
+    addLeadToTable(clientName, requestType, policyType, status, followUpDate);
 
     // Reset form and close modal
     addLeadForm.reset();
@@ -222,6 +203,67 @@ document.addEventListener('DOMContentLoaded', function () {
     updateStatusForm.reset();
     updateStatusModal.style.display = 'none';
   });
+
+  // Handle updates status modal open from reports
+  const reportsUpdateStatusBtn = document.getElementById('reports-update-status-btn');
+  if (reportsUpdateStatusBtn) {
+    reportsUpdateStatusBtn.addEventListener('click', function () {
+      // Populate leads dynamic from table
+      const leadSelect = document.getElementById('select-lead');
+      const tableRows = document.querySelectorAll('#csr-section-reports table tbody tr');
+
+      leadSelect.innerHTML = '<option value="" selected disabled>Select a lead...</option>';
+
+      tableRows.forEach((row, index) => {
+        const clientName = row.querySelector('td:nth-child(1)').textContent;
+        // value is the 1-based index to match updateLeadStatus logic
+        const option = document.createElement('option');
+        option.value = index + 1;
+        option.textContent = clientName;
+        leadSelect.appendChild(option);
+      });
+
+      updateStatusModal.style.display = 'flex';
+    });
+  }
+
+  // Handle dynamic status fields
+  const statusSelect = document.getElementById('new-status');
+  const allStatusFields = document.querySelectorAll('.status-fields');
+
+  if (statusSelect) {
+    statusSelect.addEventListener('change', function () {
+      // Hide all first
+      allStatusFields.forEach(el => el.classList.add('hidden'));
+
+      const val = this.value;
+      let targetId = '';
+
+      if (val === 'Quoting in Progress') targetId = 'fields-quoting-in-progress';
+      else if (val === 'Quote has been Emailed') targetId = 'fields-quote-emailed';
+      else if (val === 'Consent Letter Sent') targetId = 'fields-consent-letter';
+      else if (val === 'Completed') targetId = 'fields-completed';
+      else if (val === 'Did not bind') targetId = 'fields-did-not-bind';
+
+      if (targetId) {
+        document.getElementById(targetId).classList.remove('hidden');
+      }
+    });
+  }
+
+  // Handle X-date calculation
+  const renewalDateInput = document.getElementById('renewal-date-input');
+  const xDateInput = document.getElementById('x-date-input');
+
+  if (renewalDateInput && xDateInput) {
+    renewalDateInput.addEventListener('change', function () {
+      const date = new Date(this.value);
+      if (!isNaN(date.getTime())) {
+        date.setDate(date.getDate() - 60);
+        xDateInput.value = date.toISOString().split('T')[0];
+      }
+    });
+  }
 
   // Admin action buttons
   const adminActionModal = document.getElementById('admin-action-modal');
@@ -292,8 +334,8 @@ function formatDate(dateString) {
 }
 
 // Add new lead to table
-function addLeadToTable(name, source, amount, status, dueDate) {
-  const tableBody = document.querySelector('#csr-dashboard table tbody');
+function addLeadToTable(name, type, policy, status, followUpDate) {
+  const tableBody = document.querySelector('#csr-section-reports table tbody');
   if (!tableBody) return;
 
   const statusClass = getStatusClass(status);
@@ -302,12 +344,12 @@ function addLeadToTable(name, source, amount, status, dueDate) {
   newRow.className = 'hover:bg-gray-50';
   newRow.innerHTML = `
     <td class="px-6 py-4 whitespace-nowrap">${name}</td>
-    <td class="px-6 py-4 whitespace-nowrap">${source}</td>
-    <td class="px-6 py-4 whitespace-nowrap">$${amount}</td>
+    <td class="px-6 py-4 whitespace-nowrap">${type}</td>
+    <td class="px-6 py-4 whitespace-nowrap">${policy}</td>
     <td class="px-6 py-4 whitespace-nowrap">
       <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">${status}</span>
     </td>
-    <td class="px-6 py-4 whitespace-nowrap">${dueDate}</td>
+    <td class="px-6 py-4 whitespace-nowrap">${followUpDate}</td>
   `;
 
   tableBody.insertBefore(newRow, tableBody.firstChild);
@@ -331,7 +373,8 @@ function getStatusClass(status) {
 
 // Update lead status in table
 function updateLeadStatus(leadId, newStatus) {
-  const tableRows = document.querySelectorAll('#csr-dashboard table tbody tr');
+  // Target the Pipeline (Reports) table
+  const tableRows = document.querySelectorAll('#csr-section-reports table tbody tr');
   if (tableRows.length < leadId) return;
 
   const row = tableRows[leadId - 1];
@@ -343,37 +386,27 @@ function updateLeadStatus(leadId, newStatus) {
   statusBadge.className = `px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClass(newStatus)}`;
 }
 
-// Scroll to charts section based on current role
-function scrollToCharts() {
-  let chartElement;
+// Update Dashboard internal view (Dashboard, Charts, Reports)
+function updateDashboardView(role, view) {
+  const sections = ['dashboard', 'charts', 'reports'];
+  sections.forEach(s => {
+    const el = document.getElementById(`${role}-section-${s}`);
+    if (el) {
+      if (s === view) {
+        el.classList.remove('hidden');
+      } else {
+        el.classList.add('hidden');
+      }
+    }
+  });
 
-  if (currentRole === 'csr') {
-    chartElement = document.getElementById('csr-followup-chart');
-  } else if (currentRole === 'admin') {
-    chartElement = document.getElementById('admin-workflow-chart');
-  } else if (currentRole === 'superadmin') {
-    chartElement = document.getElementById('revenue-chart');
-  }
-
-  if (chartElement) {
-    chartElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-}
-
-// Scroll to reports/table section based on current role
-function scrollToReports() {
-  let tableElement;
-
-  if (currentRole === 'csr') {
-    tableElement = document.querySelector('#csr-dashboard table');
-  } else if (currentRole === 'admin') {
-    tableElement = document.querySelector('#admin-dashboard table');
-  } else if (currentRole === 'superadmin') {
-    tableElement = document.querySelector('#superadmin-dashboard table');
-  }
-
-  if (tableElement) {
-    tableElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // Resize charts if switching to charts view
+  if (view === 'charts') {
+    setTimeout(() => {
+      Object.values(charts).forEach(chart => {
+        if (chart) chart.resize();
+      });
+    }, 50);
   }
 }
 
@@ -409,14 +442,17 @@ function showDashboard(role) {
 
   if (role === 'csr') {
     csrDashboard.style.display = 'block';
+    updateDashboardView('csr', 'dashboard'); // Default view
   } else if (role === 'admin') {
     adminDashboard.style.display = 'block';
+    updateDashboardView('admin', 'dashboard'); // Default view
     // Show in-progress navigation item only for admin
     if (inProgressNav) {
       inProgressNav.classList.remove('hidden');
     }
   } else if (role === 'superadmin') {
     superadminDashboard.style.display = 'block';
+    updateDashboardView('superadmin', 'dashboard'); // Default view
 
     // Show pipeline navigation item only for superadmin
     if (pipelineNav) {
