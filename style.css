@@ -77,15 +77,23 @@ body {
   z-index: 50;
   align-items: center;
   justify-content: center;
+  padding: 1rem;
+  /* Added padding to prevent touching edges on mobile */
 }
 
 .modal {
   background-color: white;
   border-radius: 0.5rem;
   padding: 1.5rem;
-  width: 100%;
-  max-width: 500px;
+  width: 95%;
+  /* Responsive width for mobile */
+  max-width: 600px;
+  /* Slightly wider max-width for complex forms */
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  max-height: 90vh;
+  /* Prevent modal from exceeding viewport height */
+  overflow-y: auto;
+  /* Allow scrolling within the modal */
 }
 
 /* For the logout button in the sidebar */
