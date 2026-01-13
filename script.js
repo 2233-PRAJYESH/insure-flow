@@ -1,8 +1,8 @@
 // User credentials
 const users = {
-  "csr@gmail.com": { password: "csr", role: "csr", name: "John Smith", initials: "JS" },
-  "admin@gmail.com": { password: "admin", role: "admin", name: "Amanda Lee", initials: "AL" },
-  "superadmin@gmail.com": { password: "superadmin", role: "superadmin", name: "Robert Chen", initials: "RC" }
+  "csr@gmail.com": { password: "csr", role: "csr", name: "csr", initials: "JS" },
+  "admin@gmail.com": { password: "admin", role: "admin", name: "admin", initials: "AL" },
+  "superadmin@gmail.com": { password: "superadmin", role: "superadmin", name: "superadmin", initials: "RC" }
 };
 
 // Chart instances tracking
@@ -32,34 +32,34 @@ const addLeadForm = document.getElementById('add-lead-form');
 const updateStatusForm = document.getElementById('update-status-form');
 
 // Initialize
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   // Show login screen by default
   loginContainer.style.display = 'flex';
-  
+
   // Handle login form submission
-  loginForm.addEventListener('submit', function(e) {
+  loginForm.addEventListener('submit', function (e) {
     e.preventDefault();
-    
+
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const role = document.getElementById('role').value;
-    
+
     // Check credentials
     if (users[email] && users[email].password === password && users[email].role === role) {
       // Login successful
       loginContainer.style.display = 'none';
       appContainer.style.display = 'flex';
-      
+
       // Set user info
       userName.textContent = users[email].name;
       userInitials.textContent = users[email].initials;
-      
+
       // Store current role
       currentRole = role;
-      
+
       // Show appropriate dashboard
       showDashboard(role);
-      
+
       // Initialize charts
       initCharts();
     } else {
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
       loginError.style.display = 'block';
     }
   });
-  
+
   // Handle logout (update to include header logout button)
   logoutBtn.addEventListener('click', handleLogout);
 
@@ -77,39 +77,39 @@ document.addEventListener('DOMContentLoaded', function() {
   if (headerLogoutBtn) {
     headerLogoutBtn.addEventListener('click', handleLogout);
   }
-  
+
   // Handle profile dropdown
-  profileMenuBtn.addEventListener('click', function() {
+  profileMenuBtn.addEventListener('click', function () {
     profileDropdown.classList.toggle('hidden');
   });
-  
+
   // Close dropdown when clicking elsewhere
-  document.addEventListener('click', function(e) {
+  document.addEventListener('click', function (e) {
     if (!profileMenuBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
       profileDropdown.classList.add('hidden');
     }
   });
-  
+
   // Toggle sidebar on mobile
-  sidebarToggle.addEventListener('click', function() {
+  sidebarToggle.addEventListener('click', function () {
     document.querySelector('aside').classList.toggle('hidden');
   });
-  
+
   // Update date and time
   updateDateTime();
   setInterval(updateDateTime, 1000);
-  
+
   // Handle sidebar navigation
   document.querySelectorAll('.nav-item').forEach(item => {
-    item.addEventListener('click', function() {
+    item.addEventListener('click', function () {
       // Remove active class from all items
       document.querySelectorAll('.nav-item').forEach(navItem => {
         navItem.classList.remove('active');
       });
-      
+
       // Add active class to clicked item
       this.classList.add('active');
-      
+
       // Handle navigation based on data-section
       const section = this.getAttribute('data-section');
       if (section === 'dashboard') {
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('pipeline-section')?.classList.add('hidden');
         document.getElementById('commission-section')?.classList.add('hidden');
         document.getElementById('in-progress-section').style.display = 'none';
-        
+
         // Show the appropriate dashboard based on role
         if (currentRole === 'admin') {
           adminDashboard.style.display = 'block';
@@ -127,31 +127,31 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('pipeline-section')?.classList.add('hidden');
         document.getElementById('commission-section')?.classList.add('hidden');
         document.getElementById('in-progress-section').style.display = 'none';
-        
+
         // Show the appropriate dashboard based on role
         if (currentRole === 'admin') {
           adminDashboard.style.display = 'block';
         }
-        
+
         scrollToCharts();
       } else if (section === 'reports') {
         // Scroll to reports/table section based on current role
         document.getElementById('pipeline-section')?.classList.add('hidden');
         document.getElementById('commission-section')?.classList.add('hidden');
         document.getElementById('in-progress-section').style.display = 'none';
-        
+
         // Show the appropriate dashboard based on role
         if (currentRole === 'admin') {
           adminDashboard.style.display = 'block';
         }
-        
+
         scrollToReports();
       } else if (section === 'in-progress' && currentRole === 'admin') {
         // Show in-progress section, hide admin dashboard
         adminDashboard.style.display = 'none';
         document.getElementById('in-progress-section').style.display = 'block';
       } else if (section === 'pipeline' && currentRole === 'superadmin') {
-        
+
         // Show the pipeline section, hide commission section
         document.getElementById('pipeline-section')?.classList.remove('hidden');
         document.getElementById('commission-section')?.classList.add('hidden');
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
-  
+
   // Set up modal buttons
   document.querySelectorAll('button').forEach(button => {
     if (button.textContent.includes('Add Lead')) {
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
   });
-  
+
   // Close modals with cancel buttons
   document.querySelectorAll('.cancel-modal').forEach(button => {
     button.addEventListener('click', () => {
@@ -189,67 +189,67 @@ document.addEventListener('DOMContentLoaded', function() {
       updateStatusModal.style.display = 'none';
     });
   });
-  
+
   // Handle add lead form submission
-  addLeadForm.addEventListener('submit', function(e) {
+  addLeadForm.addEventListener('submit', function (e) {
     e.preventDefault();
-    
+
     const clientName = document.getElementById('client-name').value;
     const source = document.getElementById('lead-source').value;
     const amount = document.getElementById('quote-amount').value;
     const status = document.getElementById('lead-status').value;
     const dueDate = formatDate(document.getElementById('due-date').value);
-    
+
     // Add new row to the leads table
     addLeadToTable(clientName, source, amount, status, dueDate);
-    
+
     // Reset form and close modal
     addLeadForm.reset();
     addLeadModal.style.display = 'none';
   });
-  
+
   // Handle update status form submission
-  updateStatusForm.addEventListener('submit', function(e) {
+  updateStatusForm.addEventListener('submit', function (e) {
     e.preventDefault();
-    
+
     const leadId = document.getElementById('select-lead').value;
     const newStatus = document.getElementById('new-status').value;
-    
+
     // Update the status in the table
     updateLeadStatus(leadId, newStatus);
-    
+
     // Reset form and close modal
     updateStatusForm.reset();
     updateStatusModal.style.display = 'none';
   });
-  
+
   // Admin action buttons
   const adminActionModal = document.getElementById('admin-action-modal');
   const adminActionTitle = document.getElementById('admin-action-title');
   const adminActionMessage = document.getElementById('admin-action-message');
-  
+
   document.querySelectorAll('#admin-dashboard .flex.justify-between.items-center .space-x-2 button').forEach(button => {
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function () {
       const action = button.textContent.trim();
       adminActionTitle.textContent = action;
       adminActionMessage.textContent = `The ${action} action was triggered successfully.`;
       adminActionModal.style.display = 'flex';
     });
   });
-  
+
   document.querySelectorAll('.admin-modal-close').forEach(button => {
     button.addEventListener('click', () => {
       adminActionModal.style.display = 'none';
     });
   });
-  
+
   // Superadmin action buttons
   const superadminActionModal = document.getElementById('superadmin-action-modal');
   const superadminActionTitle = document.getElementById('superadmin-action-title');
   const superadminActionMessage = document.getElementById('superadmin-action-message');
-  
+
   document.querySelectorAll('#superadmin-dashboard .flex.justify-between.items-center .space-x-2 button').forEach(button => {
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function () {
       const action = button.textContent.trim();
       superadminActionTitle.textContent = action;
       superadminActionMessage.textContent = `You've accessed the ${action} functionality. This feature is coming soon.`;
@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log(`${action} button clicked in Super Admin dashboard`);
     });
   });
-  
+
   document.querySelectorAll('.superadmin-modal-close').forEach(button => {
     button.addEventListener('click', () => {
       superadminActionModal.style.display = 'none';
@@ -271,7 +271,7 @@ function handleLogout() {
   loginContainer.style.display = 'flex';
   loginForm.reset();
   loginError.style.display = 'none';
-  
+
   // Clean up charts
   Object.values(charts).forEach(chart => {
     if (chart) chart.destroy();
@@ -280,7 +280,7 @@ function handleLogout() {
   for (const key in charts) {
     delete charts[key];
   }
-  
+
   currentRole = "";
 }
 
@@ -295,9 +295,9 @@ function formatDate(dateString) {
 function addLeadToTable(name, source, amount, status, dueDate) {
   const tableBody = document.querySelector('#csr-dashboard table tbody');
   if (!tableBody) return;
-  
+
   const statusClass = getStatusClass(status);
-  
+
   const newRow = document.createElement('tr');
   newRow.className = 'hover:bg-gray-50';
   newRow.innerHTML = `
@@ -309,7 +309,7 @@ function addLeadToTable(name, source, amount, status, dueDate) {
     </td>
     <td class="px-6 py-4 whitespace-nowrap">${dueDate}</td>
   `;
-  
+
   tableBody.insertBefore(newRow, tableBody.firstChild);
 }
 
@@ -333,11 +333,11 @@ function getStatusClass(status) {
 function updateLeadStatus(leadId, newStatus) {
   const tableRows = document.querySelectorAll('#csr-dashboard table tbody tr');
   if (tableRows.length < leadId) return;
-  
+
   const row = tableRows[leadId - 1];
   const statusCell = row.querySelector('td:nth-child(4)');
   const statusBadge = statusCell.querySelector('span');
-  
+
   // Update status text and class
   statusBadge.textContent = newStatus;
   statusBadge.className = `px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClass(newStatus)}`;
@@ -346,7 +346,7 @@ function updateLeadStatus(leadId, newStatus) {
 // Scroll to charts section based on current role
 function scrollToCharts() {
   let chartElement;
-  
+
   if (currentRole === 'csr') {
     chartElement = document.getElementById('csr-followup-chart');
   } else if (currentRole === 'admin') {
@@ -354,7 +354,7 @@ function scrollToCharts() {
   } else if (currentRole === 'superadmin') {
     chartElement = document.getElementById('revenue-chart');
   }
-  
+
   if (chartElement) {
     chartElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
@@ -363,7 +363,7 @@ function scrollToCharts() {
 // Scroll to reports/table section based on current role
 function scrollToReports() {
   let tableElement;
-  
+
   if (currentRole === 'csr') {
     tableElement = document.querySelector('#csr-dashboard table');
   } else if (currentRole === 'admin') {
@@ -371,7 +371,7 @@ function scrollToReports() {
   } else if (currentRole === 'superadmin') {
     tableElement = document.querySelector('#superadmin-dashboard table');
   }
-  
+
   if (tableElement) {
     tableElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
@@ -383,30 +383,30 @@ function showDashboard(role) {
   Object.values(charts).forEach(chart => {
     if (chart) chart.destroy();
   });
-  
+
   csrDashboard.style.display = 'none';
   adminDashboard.style.display = 'none';
   superadminDashboard.style.display = 'none';
   document.getElementById('in-progress-section').style.display = 'none';
-  
+
   // Hide pipeline navigation item by default
   const pipelineNav = document.getElementById('pipeline-nav');
   if (pipelineNav) {
     pipelineNav.classList.add('hidden');
   }
-  
+
   // Hide commission navigation item by default
   const commissionNav = document.getElementById('commission-nav');
   if (commissionNav) {
     commissionNav.classList.add('hidden');
   }
-  
+
   // Hide in-progress navigation item by default
   const inProgressNav = document.getElementById('in-progress-nav');
   if (inProgressNav) {
     inProgressNav.classList.add('hidden');
   }
-  
+
   if (role === 'csr') {
     csrDashboard.style.display = 'block';
   } else if (role === 'admin') {
@@ -417,12 +417,12 @@ function showDashboard(role) {
     }
   } else if (role === 'superadmin') {
     superadminDashboard.style.display = 'block';
-    
+
     // Show pipeline navigation item only for superadmin
     if (pipelineNav) {
       pipelineNav.classList.remove('hidden');
     }
-    
+
     // Show commission navigation item only for superadmin
     if (commissionNav) {
       commissionNav.classList.remove('hidden');
@@ -433,10 +433,10 @@ function showDashboard(role) {
 // Update date and time display
 function updateDateTime() {
   const now = new Date();
-  const options = { 
-    weekday: 'short', 
-    year: 'numeric', 
-    month: 'short', 
+  const options = {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit'
