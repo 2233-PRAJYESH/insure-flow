@@ -92,7 +92,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Toggle sidebar on mobile
   sidebarToggle.addEventListener('click', function () {
-    document.querySelector('aside').classList.toggle('hidden');
+    const sidebar = document.getElementById('main-sidebar');
+    const backdrop = document.getElementById('sidebar-backdrop');
+
+    sidebar.classList.toggle('-translate-x-full');
+    backdrop.classList.toggle('hidden');
+    // small delay to allow display:block to apply before opacity transition
+    setTimeout(() => {
+      backdrop.classList.toggle('opacity-0');
+    }, 10);
+  });
+
+  // Close sidebar when clicking backdrop
+  document.getElementById('sidebar-backdrop').addEventListener('click', function () {
+    const sidebar = document.getElementById('main-sidebar');
+    const backdrop = document.getElementById('sidebar-backdrop');
+
+    sidebar.classList.add('-translate-x-full');
+    backdrop.classList.add('opacity-0');
+    setTimeout(() => {
+      backdrop.classList.add('hidden');
+    }, 300);
   });
 
   // Update date and time
@@ -109,6 +129,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // Add active class to clicked item
       this.classList.add('active');
+
+      // Close mobile sidebar if open
+      if (window.innerWidth < 768) {
+        const sidebar = document.getElementById('main-sidebar');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        if (!sidebar.classList.contains('-translate-x-full')) {
+          sidebar.classList.add('-translate-x-full');
+          backdrop.classList.add('opacity-0');
+          setTimeout(() => {
+            backdrop.classList.add('hidden');
+          }, 300);
+        }
+      }
 
       const section = this.getAttribute('data-section');
 

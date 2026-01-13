@@ -183,32 +183,48 @@ body {
 }
 
 /* Sidebar Animation */
-#main-sidebar {
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  width: 5rem;
-  /* Default collapsed width */
-  overflow: hidden;
+/* Sidebar Animation - Desktop Only */
+@media (min-width: 768px) {
+  #main-sidebar {
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 5rem;
+    /* Default collapsed width */
+    overflow: hidden;
+  }
+
+  #main-sidebar:hover {
+    width: 16rem;
+    /* Expanded width */
+  }
+
+  .sidebar-text {
+    opacity: 0;
+    max-width: 0;
+    margin-left: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #main-sidebar:hover .sidebar-text {
+    opacity: 1;
+    max-width: 200px;
+    margin-left: 0.75rem;
+    /* Replaces ml-3 */
+    transition-delay: 0.1s;
+    /* Slight delay for text appearance */
+  }
 }
 
-#main-sidebar:hover {
-  width: 16rem;
-  /* Expanded width */
-}
+/* Mobile Sidebar width */
+@media (max-width: 767px) {
+  #main-sidebar {
+    width: 16rem;
+  }
 
-.sidebar-text {
-  opacity: 0;
-  max-width: 0;
-  margin-left: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-#main-sidebar:hover .sidebar-text {
-  opacity: 1;
-  max-width: 200px;
-  margin-left: 0.75rem;
-  /* Replaces ml-3 */
-  transition-delay: 0.1s;
-  /* Slight delay for text appearance */
+  .sidebar-text {
+    opacity: 1;
+    max-width: 200px;
+    margin-left: 0.75rem;
+  }
 }

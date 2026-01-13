@@ -75,8 +75,14 @@
 
   <!-- Main App Layout -->
   <div id="app-container" class="hidden h-screen flex overflow-hidden bg-gray-100">
+    <!-- Mobile Backdrop -->
+    <div id="sidebar-backdrop"
+      class="fixed inset-0 z-30 bg-black bg-opacity-50 hidden md:hidden transition-opacity duration-300 opacity-0">
+    </div>
+
     <!-- Sidebar -->
-    <aside id="main-sidebar" class="bg-gradient text-white w-20 flex-shrink-0 flex flex-col">
+    <aside id="main-sidebar"
+      class="bg-gradient text-white flex-shrink-0 flex flex-col fixed inset-y-0 left-0 z-40 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0 md:transform-none md:z-auto">
       <div class="p-4 flex items-center justify-center lg:justify-start">
         <div class="h-10 w-10 rounded-full bg-white flex items-center justify-center text-primary text-xl">
           <i class="fas fa-shield-alt"></i>
@@ -132,7 +138,7 @@
       <header class="bg-white shadow-sm z-10">
         <div class="px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div class="flex items-center">
-            <button id="sidebar-toggle" class="mr-4 text-gray-600 focus:outline-none lg:hidden">
+            <button id="sidebar-toggle" class="mr-4 text-gray-600 focus:outline-none md:hidden">
               <i class="fas fa-bars"></i>
             </button>
             <div class="relative w-64 lg:w-96">
