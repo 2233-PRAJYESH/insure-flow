@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,161 +24,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style id="app-style">
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-    .bg-gradient {
-      background: linear-gradient(to bottom, #10b981, #0ea5e9);
-    }
-    .dashboard-card {
-      transition: all 0.3s ease;
-    }
-    .dashboard-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    }
-    .loader {
-      border-top-color: #10b981;
-      -webkit-animation: spinner 1.5s linear infinite;
-      animation: spinner 1.5s linear infinite;
-    }
-    @-webkit-keyframes spinner {
-      0% { -webkit-transform: rotate(0deg); }
-      100% { -webkit-transform: rotate(360deg); }
-    }
-    @keyframes spinner {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    /* Hide all dashboard sections by default */
-    #login-container, #csr-dashboard, #admin-dashboard, #superadmin-dashboard {
-      display: none;
-    }
-    .nav-item {
-      transition: all 0.2s ease;
-    }
-    .nav-item:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-    .nav-item.active {
-      background-color: rgba(255, 255, 255, 0.2);
-      border-left: 4px solid white;
-    }
-    .progress-bar {
-      transition: width 1s ease-in-out;
-    }
-    
-    .modal-container {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 50;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal {
-      background-color: white;
-      border-radius: 0.5rem;
-      padding: 1.5rem;
-      width: 100%;
-      max-width: 500px;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    }
-
-    /* For the logout button in the sidebar */
-    #logout-btn {
-      display: none; /* Hide the logout button */
-    }
-
-    /* Updated login background animation */
-    .login-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #10b981, #0ea5e9);
-      background-size: 400% 400%;
-      animation: gradientWave 15s ease infinite;
-      z-index: 0;
-    }
-
-    @keyframes gradientWave {
-      0% {
-        background-position: 0% 50%;
-      }
-      50% {
-        background-position: 100% 50%;
-      }
-      100% {
-        background-position: 0% 50%;
-      }
-    }
-
-    /* Remove transaction-icon animations since they're no longer needed */
-    .transaction-icon {
-      display: none;
-    }
-    
-    /* CSS changes for Admin Dashboard KPI cards */
-    .kpi-card {
-      position: relative;
-      background: #fff;
-      border-radius: 1rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      padding: 1.5rem;
-      border-top: 1px solid var(--accent-color);
-      border-left: 4px solid var(--accent-color);
-      transition: box-shadow 0.3s, transform 0.3s;
-    }
-    .kpi-card:hover {
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-      transform: scale(1.02);
-    }
-    .kpi-card .kpi-icon-bg {
-      position: absolute;
-      bottom: 0.5rem;
-      right: 0.5rem;
-      opacity: 0.1;
-      font-size: 3rem;
-    }
-    .kpi-card .kpi-value {
-      font-size: 2rem;
-      font-weight: 600;
-    }
-    
-    .sortable-header {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-    }
-    .sortable-header i {
-      font-size: 0.6rem;
-      margin-left: 0.25rem;
-      color: #6b7280;
-    }
-
-    #in-progress-section th {
-      white-space: nowrap;
-      display: table-cell;
-      padding: 0.5rem 0.75rem;
-      vertical-align: middle;
-    }
-
-    #in-progress-section th i {
-      font-size: 0.6rem;
-      margin-left: 0.25rem;
-      color: #6b7280;
-      display: inline-block;
-    }
-</style>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body class="bg-gray-100">
   <!-- Login Container -->
   <div id="login-container" class="min-h-screen flex items-center justify-center bg-gray-100">
@@ -186,40 +35,47 @@
     <div class="bg-white p-8 rounded-xl shadow-md w-full max-w-md z-10">
       <div class="text-center mb-8">
         <div class="flex justify-center mb-4">
-          <div class="h-16 w-16 rounded-full bg-gradient flex items-center justify-center text-white text-2xl font-bold">
+          <div
+            class="h-16 w-16 rounded-full bg-gradient flex items-center justify-center text-white text-2xl font-bold">
             <i class="fas fa-shield-alt"></i>
           </div>
         </div>
         <h1 class="text-2xl font-bold text-gray-800">InsureFlow</h1>
         <p class="text-gray-600">Customer Success Management Platform</p>
       </div>
-      
+
       <form id="login-form" class="space-y-6">
         <div>
           <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-          <input type="email" id="email" name="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary" required>
+          <input type="email" id="email" name="email"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
+            required>
         </div>
-        
+
         <div>
           <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-          <input type="password" id="password" name="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary" required>
+          <input type="password" id="password" name="password"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
+            required>
         </div>
-        
+
         <div>
           <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
-          <select id="role" name="role" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+          <select id="role" name="role"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
             <option value="csr">CSR</option>
             <option value="admin">Admin</option>
             <option value="superadmin">Super Admin</option>
           </select>
         </div>
-        
+
         <div>
-          <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+          <button type="submit"
+            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
             Sign In
           </button>
         </div>
-        
+
         <div id="login-error" class="hidden text-red-500 text-center text-sm"></div>
       </form>
     </div>
@@ -235,36 +91,43 @@
         </div>
         <span class="ml-3 text-xl font-bold hidden lg:block">InsureFlow</span>
       </div>
-      
+
       <nav class="mt-8 flex-1 px-2 space-y-2">
-        <a href="javascript:void(0)" class="nav-item active flex items-center px-4 py-3 text-white rounded-md" data-section="dashboard">
+        <a href="javascript:void(0)" class="nav-item active flex items-center px-4 py-3 text-white rounded-md"
+          data-section="dashboard">
           <i class="fas fa-th-large w-6 text-center text-xl"></i>
           <span class="ml-3 hidden lg:block">Dashboard</span>
         </a>
-        <a href="javascript:void(0)" class="nav-item flex items-center px-4 py-3 text-white rounded-md" data-section="charts">
+        <a href="javascript:void(0)" class="nav-item flex items-center px-4 py-3 text-white rounded-md"
+          data-section="charts">
           <i class="fas fa-chart-line w-6 text-center text-xl"></i>
           <span class="ml-3 hidden lg:block">Charts</span>
         </a>
-        <a href="javascript:void(0)" class="nav-item flex items-center px-4 py-3 text-white rounded-md" data-section="reports">
+        <a href="javascript:void(0)" class="nav-item flex items-center px-4 py-3 text-white rounded-md"
+          data-section="reports">
           <i class="fas fa-file-alt w-6 text-center text-xl"></i>
           <span class="ml-3 hidden lg:block">Reports</span>
         </a>
-        <a href="javascript:void(0)" id="pipeline-nav" class="nav-item flex items-center px-4 py-3 text-white rounded-md hidden" data-section="pipeline">
+        <a href="javascript:void(0)" id="pipeline-nav"
+          class="nav-item flex items-center px-4 py-3 text-white rounded-md hidden" data-section="pipeline">
           <i class="fas fa-stream w-6 text-center text-xl"></i>
           <span class="ml-3 hidden lg:block">Pipeline</span>
         </a>
-        <a href="javascript:void(0)" id="commission-nav" class="nav-item flex items-center px-4 py-3 text-white rounded-md hidden" data-section="commission">
+        <a href="javascript:void(0)" id="commission-nav"
+          class="nav-item flex items-center px-4 py-3 text-white rounded-md hidden" data-section="commission">
           <i class="fas fa-percentage w-6 text-center text-xl"></i>
           <span class="ml-3 hidden lg:block">Commission</span>
         </a>
-        <a href="javascript:void(0)" id="in-progress-nav" class="nav-item flex items-center px-4 py-3 text-white rounded-md hidden" data-section="in-progress">
+        <a href="javascript:void(0)" id="in-progress-nav"
+          class="nav-item flex items-center px-4 py-3 text-white rounded-md hidden" data-section="in-progress">
           <i class="fas fa-tasks w-6 text-center text-xl"></i>
           <span class="ml-3 hidden lg:block">In Progress</span>
         </a>
       </nav>
-      
+
       <div class="p-4">
-        <a href="javascript:void(0)" id="logout-btn" class="flex items-center px-4 py-2 text-white hover:bg-white hover:bg-opacity-10 rounded-md">
+        <a href="javascript:void(0)" id="logout-btn"
+          class="flex items-center px-4 py-2 text-white hover:bg-white hover:bg-opacity-10 rounded-md">
           <i class="fas fa-sign-out-alt w-6 text-center"></i>
           <span class="ml-3 hidden lg:block">Logout</span>
         </a>
@@ -281,24 +144,25 @@
               <i class="fas fa-bars"></i>
             </button>
             <div class="relative w-64 lg:w-96">
-              <input type="text" placeholder="Search..." class="w-full px-4 py-2 bg-gray-100 rounded-md focus:outline-none">
+              <input type="text" placeholder="Search..."
+                class="w-full px-4 py-2 bg-gray-100 rounded-md focus:outline-none">
               <i class="fas fa-search absolute right-3 top-2.5 text-gray-400"></i>
             </div>
           </div>
-          
+
           <div class="flex items-center space-x-6">
             <div class="text-sm text-gray-600" id="current-date-time">
               <i class="far fa-clock mr-1"></i>
               <span></span>
             </div>
-            
+
             <div class="relative">
               <button class="text-gray-600 focus:outline-none relative">
                 <i class="fas fa-bell text-xl"></i>
                 <span class="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
               </button>
             </div>
-            
+
             <div class="relative" id="profile-menu-container">
               <button id="profile-menu-btn" class="flex items-center focus:outline-none">
                 <div class="h-8 w-8 rounded-full bg-gradient flex items-center justify-center text-white">
@@ -307,20 +171,22 @@
                 <span id="user-name" class="ml-2 text-sm font-medium text-gray-700 hidden lg:block">John Doe</span>
                 <i class="fas fa-chevron-down ml-1 text-gray-400 hidden lg:block"></i>
               </button>
-              
+
               <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden">
-                <a href="javascript:void(0)" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                <a href="javascript:void(0)" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your
+                  Profile</a>
               </div>
             </div>
-            
-            <button id="header-logout-btn" class="flex items-center px-3 py-2 text-gray-600 rounded-md hover:bg-gray-100 focus:outline-none">
+
+            <button id="header-logout-btn"
+              class="flex items-center px-3 py-2 text-gray-600 rounded-md hover:bg-gray-100 focus:outline-none">
               <i class="fas fa-sign-out-alt mr-2"></i>
               <span class="text-sm hidden sm:inline">Logout</span>
             </button>
           </div>
         </div>
       </header>
-      
+
       <!-- Main Content Area -->
       <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
         <!-- CSR Dashboard -->
@@ -336,11 +202,12 @@
               </button>
             </div>
           </div>
-          
+
           <!-- KPI Cards -->
           <!-- CSR Dashboard Cards -->
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="dashboard-card bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
+            <div
+              class="dashboard-card bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
               <div class="flex items-center">
                 <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
                   <i class="fas fa-users-line text-2xl"></i>
@@ -351,8 +218,9 @@
                 </div>
               </div>
             </div>
-            
-            <div class="dashboard-card bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
+
+            <div
+              class="dashboard-card bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
               <div class="flex items-center">
                 <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
                   <i class="fas fa-phone-volume text-2xl"></i>
@@ -363,8 +231,9 @@
                 </div>
               </div>
             </div>
-            
-            <div class="dashboard-card bg-gradient-to-br from-violet-500 to-violet-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
+
+            <div
+              class="dashboard-card bg-gradient-to-br from-violet-500 to-violet-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
               <div class="flex items-center">
                 <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
                   <i class="fas fa-file-signature text-2xl"></i>
@@ -375,8 +244,9 @@
                 </div>
               </div>
             </div>
-            
-            <div class="dashboard-card bg-gradient-to-br from-rose-500 to-rose-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
+
+            <div
+              class="dashboard-card bg-gradient-to-br from-rose-500 to-rose-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
               <div class="flex items-center">
                 <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
                   <i class="fas fa-bell-exclamation text-2xl"></i>
@@ -388,7 +258,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Chart -->
             <div class="bg-white rounded-xl shadow-sm p-6 lg:col-span-1">
@@ -397,7 +267,7 @@
                 <canvas id="csr-followup-chart"></canvas>
               </div>
             </div>
-            
+
             <!-- Leads Table -->
             <div class="bg-white rounded-xl shadow-sm p-6 lg:col-span-2">
               <h2 class="text-lg font-medium text-gray-800 mb-4">Recent Leads</h2>
@@ -405,11 +275,21 @@
                 <table class="min-w-full divide-y divide-gray-200">
                   <thead class="bg-teal-50">
                     <tr>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Client Name</th>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Source</th>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Quote Amount</th>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Status</th>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Due Date</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Client
+                        Name</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Source
+                      </th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Quote
+                        Amount</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Status
+                      </th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Due Date
+                      </th>
                     </tr>
                   </thead>
                   <tbody class="bg-white divide-y divide-gray-200">
@@ -418,7 +298,8 @@
                       <td class="px-6 py-4 whitespace-nowrap">Website</td>
                       <td class="px-6 py-4 whitespace-nowrap">$2,450</td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                        <span
+                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap">Oct 12, 2025</td>
                     </tr>
@@ -427,7 +308,8 @@
                       <td class="px-6 py-4 whitespace-nowrap">Referral</td>
                       <td class="px-6 py-4 whitespace-nowrap">$3,200</td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                        <span
+                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap">Oct 14, 2025</td>
                     </tr>
@@ -436,7 +318,8 @@
                       <td class="px-6 py-4 whitespace-nowrap">Cold Call</td>
                       <td class="px-6 py-4 whitespace-nowrap">$1,890</td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Overdue</span>
+                        <span
+                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Overdue</span>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap">Oct 5, 2025</td>
                     </tr>
@@ -445,7 +328,8 @@
                       <td class="px-6 py-4 whitespace-nowrap">Email Campaign</td>
                       <td class="px-6 py-4 whitespace-nowrap">$4,100</td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">New</span>
+                        <span
+                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">New</span>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap">Oct 18, 2025</td>
                     </tr>
@@ -454,7 +338,8 @@
                       <td class="px-6 py-4 whitespace-nowrap">Partner</td>
                       <td class="px-6 py-4 whitespace-nowrap">$2,780</td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                        <span
+                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap">Oct 16, 2025</td>
                     </tr>
@@ -481,11 +366,12 @@
               </button>
             </div>
           </div>
-          
+
           <!-- KPI Cards -->
           <!-- Admin Dashboard Cards -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-            <div class="relative bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl shadow-lg p-6 text-white transform transition-all duration-300 hover:scale-105">
+            <div
+              class="relative bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl shadow-lg p-6 text-white transform transition-all duration-300 hover:scale-105">
               <div class="flex items-center">
                 <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
                   <i class="fas fa-user-tie text-2xl"></i>
@@ -499,8 +385,9 @@
                 <i class="fas fa-user-tie text-5xl"></i>
               </div>
             </div>
-            
-            <div class="relative bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-2xl shadow-lg p-6 text-white transform transition-all duration-300 hover:scale-105">
+
+            <div
+              class="relative bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-2xl shadow-lg p-6 text-white transform transition-all duration-300 hover:scale-105">
               <div class="flex items-center">
                 <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
                   <i class="fas fa-headset text-2xl"></i>
@@ -514,8 +401,9 @@
                 <i class="fas fa-headset text-5xl"></i>
               </div>
             </div>
-            
-            <div class="relative bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl shadow-lg p-6 text-white transform transition-all duration-300 hover:scale-105">
+
+            <div
+              class="relative bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl shadow-lg p-6 text-white transform transition-all duration-300 hover:scale-105">
               <div class="flex items-center">
                 <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
                   <i class="fas fa-diagram-project text-2xl"></i>
@@ -529,8 +417,9 @@
                 <i class="fas fa-diagram-project text-5xl"></i>
               </div>
             </div>
-            
-            <div class="relative bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl shadow-lg p-6 text-white transform transition-all duration-300 hover:scale-105">
+
+            <div
+              class="relative bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl shadow-lg p-6 text-white transform transition-all duration-300 hover:scale-105">
               <div class="flex items-center">
                 <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
                   <i class="fas fa-chart-line text-2xl"></i>
@@ -545,7 +434,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Chart -->
             <div class="bg-white rounded-xl shadow-sm p-6 lg:col-span-1">
@@ -554,7 +443,7 @@
                 <canvas id="admin-workflow-chart"></canvas>
               </div>
             </div>
-            
+
             <!-- Team Performance Table -->
             <div class="bg-white rounded-xl shadow-sm p-6 lg:col-span-2">
               <h2 class="text-lg font-medium text-gray-800 mb-4">Team Performance</h2>
@@ -562,11 +451,21 @@
                 <table class="min-w-full divide-y divide-gray-200">
                   <thead class="bg-teal-50">
                     <tr>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Manager Name</th>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">CSR Count</th>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Tasks Completed</th>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Progress %</th>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Workflow</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Manager
+                        Name</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">CSR Count
+                      </th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Tasks
+                        Completed</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Progress
+                        %</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Workflow
+                      </th>
                     </tr>
                   </thead>
                   <tbody class="bg-white divide-y divide-gray-200">
@@ -575,35 +474,55 @@
                       <td class="px-6 py-4 whitespace-nowrap">12</td>
                       <td class="px-6 py-4 whitespace-nowrap">87</td>
                       <td class="px-6 py-4 whitespace-nowrap">78%</td>
-                      <td class="px-6 py-4 whitespace-nowrap"> <div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-green-600 h-2.5 rounded-full progress-bar" style="width: 78%"></div></div> </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                          <div class="bg-green-600 h-2.5 rounded-full progress-bar" style="width: 78%"></div>
+                        </div>
+                      </td>
                     </tr>
                     <tr class="hover:bg-gray-50">
                       <td class="px-6 py-4 whitespace-nowrap font-medium">Jessica Wu</td>
                       <td class="px-6 py-4 whitespace-nowrap">8</td>
                       <td class="px-6 py-4 whitespace-nowrap">64</td>
                       <td class="px-6 py-4 whitespace-nowrap">92%</td>
-                      <td class="px-6 py-4 whitespace-nowrap"> <div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-green-600 h-2.5 rounded-full progress-bar" style="width: 92%"></div></div> </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                          <div class="bg-green-600 h-2.5 rounded-full progress-bar" style="width: 92%"></div>
+                        </div>
+                      </td>
                     </tr>
                     <tr class="hover:bg-gray-50">
                       <td class="px-6 py-4 whitespace-nowrap font-medium">David Kim</td>
                       <td class="px-6 py-4 whitespace-nowrap">10</td>
                       <td class="px-6 py-4 whitespace-nowrap">42</td>
                       <td class="px-6 py-4 whitespace-nowrap">45%</td>
-                      <td class="px-6 py-4 whitespace-nowrap"> <div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-yellow-500 h-2.5 rounded-full progress-bar" style="width: 45%"></div></div> </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                          <div class="bg-yellow-500 h-2.5 rounded-full progress-bar" style="width: 45%"></div>
+                        </div>
+                      </td>
                     </tr>
                     <tr class="hover:bg-gray-50">
                       <td class="px-6 py-4 whitespace-nowrap font-medium">Sophia Rodriguez</td>
                       <td class="px-6 py-4 whitespace-nowrap">14</td>
                       <td class="px-6 py-4 whitespace-nowrap">102</td>
                       <td class="px-6 py-4 whitespace-nowrap">65%</td>
-                      <td class="px-6 py-4 whitespace-nowrap"> <div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-blue-500 h-2.5 rounded-full progress-bar" style="width: 65%"></div></div> </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                          <div class="bg-blue-500 h-2.5 rounded-full progress-bar" style="width: 65%"></div>
+                        </div>
+                      </td>
                     </tr>
                     <tr class="hover:bg-gray-50">
                       <td class="px-6 py-4 whitespace-nowrap font-medium">Thomas Williams</td>
                       <td class="px-6 py-4 whitespace-nowrap">4</td>
                       <td class="px-6 py-4 whitespace-nowrap">28</td>
                       <td class="px-6 py-4 whitespace-nowrap">25%</td>
-                      <td class="px-6 py-4 whitespace-nowrap"> <div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-red-500 h-2.5 rounded-full progress-bar" style="width: 25%"></div></div> </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                          <div class="bg-red-500 h-2.5 rounded-full progress-bar" style="width: 25%"></div>
+                        </div>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -617,21 +536,37 @@
           <div class="flex justify-between items-center">
             <h1 class="text-2xl font-bold text-gray-800">In Progress Tasks</h1>
           </div>
-          
+
           <div class="bg-white rounded-xl shadow-sm p-6">
             <h2 class="text-xl font-semibold text-gray-800 mb-4">In Progress</h2>
             <div class="overflow-x-auto">
               <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-100">
                   <tr>
-                    <th scope="col" class="px-4 py-2 text-left text-sm font-medium text-gray-700 whitespace-nowrap flex items-center">S.No <i class="fas fa-sort-up ml-1"></i></th>
-                    <th scope="col" class="px-4 py-2 text-left text-sm font-medium text-gray-700 whitespace-nowrap flex items-center">Date <i class="fas fa-sort-down ml-1"></i></th>
-                    <th scope="col" class="px-4 py-2 text-left text-sm font-medium text-gray-700 whitespace-nowrap flex items-center">Policy Amount <i class="fas fa-sort ml-1"></i></th>
-                    <th scope="col" class="px-4 py-2 text-left text-sm font-medium text-gray-700 whitespace-nowrap flex items-center">CSR Name <i class="fas fa-sort ml-1"></i></th>
-                    <th scope="col" class="px-4 py-2 text-left text-sm font-medium text-gray-700 whitespace-nowrap flex items-center">Policy ID <i class="fas fa-sort ml-1"></i></th>
-                    <th scope="col" class="px-4 py-2 text-left text-sm font-medium text-gray-700 whitespace-nowrap flex items-center">Client Name <i class="fas fa-sort ml-1"></i></th>
-                    <th scope="col" class="px-4 py-2 text-left text-sm font-medium text-gray-700 whitespace-nowrap flex items-center">Policy <i class="fas fa-sort ml-1"></i></th>
-                    <th scope="col" class="px-4 py-2 text-left text-sm font-medium text-gray-700 whitespace-nowrap flex items-center">Policy Status <i class="fas fa-sort ml-1"></i></th>
+                    <th scope="col"
+                      class="px-4 py-2 text-left text-sm font-medium text-gray-700 whitespace-nowrap flex items-center">
+                      S.No <i class="fas fa-sort-up ml-1"></i></th>
+                    <th scope="col"
+                      class="px-4 py-2 text-left text-sm font-medium text-gray-700 whitespace-nowrap flex items-center">
+                      Date <i class="fas fa-sort-down ml-1"></i></th>
+                    <th scope="col"
+                      class="px-4 py-2 text-left text-sm font-medium text-gray-700 whitespace-nowrap flex items-center">
+                      Policy Amount <i class="fas fa-sort ml-1"></i></th>
+                    <th scope="col"
+                      class="px-4 py-2 text-left text-sm font-medium text-gray-700 whitespace-nowrap flex items-center">
+                      CSR Name <i class="fas fa-sort ml-1"></i></th>
+                    <th scope="col"
+                      class="px-4 py-2 text-left text-sm font-medium text-gray-700 whitespace-nowrap flex items-center">
+                      Policy ID <i class="fas fa-sort ml-1"></i></th>
+                    <th scope="col"
+                      class="px-4 py-2 text-left text-sm font-medium text-gray-700 whitespace-nowrap flex items-center">
+                      Client Name <i class="fas fa-sort ml-1"></i></th>
+                    <th scope="col"
+                      class="px-4 py-2 text-left text-sm font-medium text-gray-700 whitespace-nowrap flex items-center">
+                      Policy <i class="fas fa-sort ml-1"></i></th>
+                    <th scope="col"
+                      class="px-4 py-2 text-left text-sm font-medium text-gray-700 whitespace-nowrap flex items-center">
+                      Policy Status <i class="fas fa-sort ml-1"></i></th>
                   </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -643,7 +578,9 @@
                     <td class="px-4 py-3 whitespace-nowrap">POL-2025-0042</td>
                     <td class="px-4 py-3 whitespace-nowrap">Robert Wilson</td>
                     <td class="px-4 py-3 whitespace-nowrap">Home Insurance</td>
-                    <td class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Approved</td>
+                    <td
+                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      Approved</td>
                   </tr>
                   <tr class="bg-green-50">
                     <td class="px-4 py-3 whitespace-nowrap">2</td>
@@ -653,7 +590,9 @@
                     <td class="px-4 py-3 whitespace-nowrap">POL-2025-0058</td>
                     <td class="px-4 py-3 whitespace-nowrap">Linda Martinez</td>
                     <td class="px-4 py-3 whitespace-nowrap">Auto Insurance</td>
-                    <td class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</td>
+                    <td
+                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                      Pending</td>
                   </tr>
                   <tr class="bg-white">
                     <td class="px-4 py-3 whitespace-nowrap">3</td>
@@ -663,7 +602,9 @@
                     <td class="px-4 py-3 whitespace-nowrap">POL-2025-0063</td>
                     <td class="px-4 py-3 whitespace-nowrap">James Johnson</td>
                     <td class="px-4 py-3 whitespace-nowrap">Commercial Insurance</td>
-                    <td class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Approved</td>
+                    <td
+                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      Approved</td>
                   </tr>
                   <tr class="bg-green-50">
                     <td class="px-4 py-3 whitespace-nowrap">4</td>
@@ -673,7 +614,9 @@
                     <td class="px-4 py-3 whitespace-nowrap">POL-2025-0075</td>
                     <td class="px-4 py-3 whitespace-nowrap">Emily Davis</td>
                     <td class="px-4 py-3 whitespace-nowrap">Life Insurance</td>
-                    <td class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</td>
+                    <td
+                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                      Pending</td>
                   </tr>
                   <tr class="bg-white">
                     <td class="px-4 py-3 whitespace-nowrap">5</td>
@@ -683,7 +626,9 @@
                     <td class="px-4 py-3 whitespace-nowrap">POL-2025-0089</td>
                     <td class="px-4 py-3 whitespace-nowrap">Thomas Williams</td>
                     <td class="px-4 py-3 whitespace-nowrap">Health Insurance</td>
-                    <td class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Approved</td>
+                    <td
+                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      Approved</td>
                   </tr>
                 </tbody>
               </table>
@@ -707,11 +652,12 @@
               </button>
             </div>
           </div>
-          
+
           <!-- KPI Cards -->
           <!-- Super Admin Dashboard Cards -->
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="dashboard-card bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
+            <div
+              class="dashboard-card bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
               <div class="flex items-center">
                 <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
                   <i class="fas fa-users-gear text-2xl"></i>
@@ -722,8 +668,9 @@
                 </div>
               </div>
             </div>
-            
-            <div class="dashboard-card bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
+
+            <div
+              class="dashboard-card bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
               <div class="flex items-center">
                 <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
                   <i class="fas fa-network-wired text-2xl"></i>
@@ -734,8 +681,9 @@
                 </div>
               </div>
             </div>
-            
-            <div class="dashboard-card bg-gradient-to-br from-teal-500 to-teal-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
+
+            <div
+              class="dashboard-card bg-gradient-to-br from-teal-500 to-teal-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
               <div class="flex items-center">
                 <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
                   <i class="fas fa-file-contract text-2xl"></i>
@@ -746,8 +694,9 @@
                 </div>
               </div>
             </div>
-            
-            <div class="dashboard-card bg-gradient-to-br from-amber-500 to-amber-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
+
+            <div
+              class="dashboard-card bg-gradient-to-br from-amber-500 to-amber-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
               <div class="flex items-center">
                 <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
                   <i class="fas fa-coins text-2xl"></i>
@@ -759,7 +708,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Charts -->
             <div class="bg-white rounded-xl shadow-sm p-6">
@@ -768,21 +717,21 @@
                 <canvas id="revenue-chart"></canvas>
               </div>
             </div>
-            
+
             <div class="bg-white rounded-xl shadow-sm p-6">
               <h2 class="text-lg font-medium text-gray-800 mb-4">SLA Compliance</h2>
               <div class="h-64 relative">
                 <canvas id="sla-chart"></canvas>
               </div>
             </div>
-            
+
             <div class="bg-white rounded-xl shadow-sm p-6">
               <h2 class="text-lg font-medium text-gray-800 mb-4">Role Activity Breakdown</h2>
               <div class="h-64 relative">
                 <canvas id="role-activity-chart"></canvas>
               </div>
             </div>
-            
+
             <!-- User Activity Table -->
             <div class="bg-white rounded-xl shadow-sm p-6">
               <h2 class="text-lg font-medium text-gray-800 mb-4">User Activity Summary</h2>
@@ -790,10 +739,16 @@
                 <table class="min-w-full divide-y divide-gray-200">
                   <thead class="bg-teal-50">
                     <tr>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Name</th>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Role</th>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Tasks</th>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Status</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Name</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Role</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Tasks
+                      </th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Status
+                      </th>
                     </tr>
                   </thead>
                   <tbody class="bg-white divide-y divide-gray-200">
@@ -802,7 +757,8 @@
                       <td class="px-6 py-4 whitespace-nowrap">Admin</td>
                       <td class="px-6 py-4 whitespace-nowrap">14</td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                        <span
+                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
                       </td>
                     </tr>
                     <tr class="hover:bg-gray-50">
@@ -810,7 +766,8 @@
                       <td class="px-6 py-4 whitespace-nowrap">CSR</td>
                       <td class="px-6 py-4 whitespace-nowrap">32</td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                        <span
+                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
                       </td>
                     </tr>
                     <tr class="hover:bg-gray-50">
@@ -818,7 +775,8 @@
                       <td class="px-6 py-4 whitespace-nowrap">Admin</td>
                       <td class="px-6 py-4 whitespace-nowrap">8</td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Away</span>
+                        <span
+                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Away</span>
                       </td>
                     </tr>
                     <tr class="hover:bg-gray-50">
@@ -826,7 +784,8 @@
                       <td class="px-6 py-4 whitespace-nowrap">CSR</td>
                       <td class="px-6 py-4 whitespace-nowrap">27</td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                        <span
+                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
                       </td>
                     </tr>
                     <tr class="hover:bg-gray-50">
@@ -834,14 +793,15 @@
                       <td class="px-6 py-4 whitespace-nowrap">CSR</td>
                       <td class="px-6 py-4 whitespace-nowrap">18</td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Offline</span>
+                        <span
+                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Offline</span>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
-            
+
             <!-- Pipeline Section -->
             <div id="pipeline-section" class="space-y-6 mt-8 hidden">
               <div class="flex justify-between items-center">
@@ -852,7 +812,7 @@
                   </button>
                 </div>
               </div>
-              
+
               <!-- Admin Workflows Section -->
               <div class="bg-white rounded-xl shadow-sm p-6">
                 <h2 class="text-lg font-medium text-gray-800 mb-4">Admin Workflows</h2>
@@ -860,11 +820,21 @@
                   <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-teal-50">
                       <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Manager Name</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">CSR Count</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Tasks Completed</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Progress %</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Workflow</th>
+                        <th scope="col"
+                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Manager
+                          Name</th>
+                        <th scope="col"
+                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">CSR
+                          Count</th>
+                        <th scope="col"
+                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Tasks
+                          Completed</th>
+                        <th scope="col"
+                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">
+                          Progress %</th>
+                        <th scope="col"
+                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">
+                          Workflow</th>
                       </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -873,27 +843,39 @@
                         <td class="px-6 py-4 whitespace-nowrap">12</td>
                         <td class="px-6 py-4 whitespace-nowrap">87</td>
                         <td class="px-6 py-4 whitespace-nowrap">78%</td>
-                        <td class="px-6 py-4 whitespace-nowrap"><div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-green-600 h-2.5 rounded-full progress-bar" style="width: 78%"></div></div></td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                          <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-green-600 h-2.5 rounded-full progress-bar" style="width: 78%"></div>
+                          </div>
+                        </td>
                       </tr>
                       <tr class="hover:bg-gray-50">
                         <td class="px-6 py-4 whitespace-nowrap font-medium">Jessica Wu</td>
                         <td class="px-6 py-4 whitespace-nowrap">8</td>
                         <td class="px-6 py-4 whitespace-nowrap">64</td>
                         <td class="px-6 py-4 whitespace-nowrap">92%</td>
-                        <td class="px-6 py-4 whitespace-nowrap"><div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-green-600 h-2.5 rounded-full progress-bar" style="width: 92%"></div></div></td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                          <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-green-600 h-2.5 rounded-full progress-bar" style="width: 92%"></div>
+                          </div>
+                        </td>
                       </tr>
                       <tr class="hover:bg-gray-50">
                         <td class="px-6 py-4 whitespace-nowrap font-medium">David Kim</td>
                         <td class="px-6 py-4 whitespace-nowrap">10</td>
                         <td class="px-6 py-4 whitespace-nowrap">42</td>
                         <td class="px-6 py-4 whitespace-nowrap">45%</td>
-                        <td class="px-6 py-4 whitespace-nowrap"><div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-yellow-500 h-2.5 rounded-full progress-bar" style="width: 45%"></div></div></td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                          <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-yellow-500 h-2.5 rounded-full progress-bar" style="width: 45%"></div>
+                          </div>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
-              
+
               <!-- CSR Workflows Section -->
               <div class="bg-white rounded-xl shadow-sm p-6">
                 <h2 class="text-lg font-medium text-gray-800 mb-4">CSR Leads Pipeline</h2>
@@ -901,11 +883,21 @@
                   <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-teal-50">
                       <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Client Name</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Source</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Quote Amount</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Status</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">CSR</th>
+                        <th scope="col"
+                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Client
+                          Name</th>
+                        <th scope="col"
+                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Source
+                        </th>
+                        <th scope="col"
+                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Quote
+                          Amount</th>
+                        <th scope="col"
+                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Status
+                        </th>
+                        <th scope="col"
+                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">CSR
+                        </th>
                       </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -914,7 +906,8 @@
                         <td class="px-6 py-4 whitespace-nowrap">Website</td>
                         <td class="px-6 py-4 whitespace-nowrap">$2,450</td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                          <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">Maria Garcia</td>
                       </tr>
@@ -923,7 +916,8 @@
                         <td class="px-6 py-4 whitespace-nowrap">Email Campaign</td>
                         <td class="px-6 py-4 whitespace-nowrap">$4,100</td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                          <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">New</span>
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">New</span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">John Smith</td>
                       </tr>
@@ -932,7 +926,8 @@
                         <td class="px-6 py-4 whitespace-nowrap">Cold Call</td>
                         <td class="px-6 py-4 whitespace-nowrap">$1,890</td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                          <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Overdue</span>
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Overdue</span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">Michael Brown</td>
                       </tr>
@@ -952,7 +947,7 @@
                   </button>
                 </div>
               </div>
-              
+
               <!-- Commission Table -->
               <div class="bg-white rounded-xl shadow-sm p-6">
                 <h2 class="text-lg font-medium text-gray-800 mb-4">Commission Breakdown</h2>
@@ -960,10 +955,18 @@
                   <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-teal-50">
                       <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Policy ID</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Client Name</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Commission %</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Date Issued</th>
+                        <th scope="col"
+                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Policy
+                          ID</th>
+                        <th scope="col"
+                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Client
+                          Name</th>
+                        <th scope="col"
+                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">
+                          Commission %</th>
+                        <th scope="col"
+                          class="px-6 py-3 text-left text-xs font-medium text-teal-800 uppercase tracking-wider">Date
+                          Issued</th>
                       </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -1002,733 +1005,145 @@
                 </div>
               </div>
             </div>
-          </main>
-          
-          <!-- Add version label footer -->
-          <footer class="mt-8 text-center py-4">
-            <p class="text-gray-400 text-sm">InsureFlow v7</p>
-          </footer>
+      </main>
+
+      <!-- Add version label footer -->
+      <footer class="mt-8 text-center py-4">
+        <p class="text-gray-400 text-sm">InsureFlow v7</p>
+      </footer>
+    </div>
+  </div>
+  </div>
+
+  <!-- Modals -->
+  <div id="add-lead-modal" class="modal-container">
+    <div class="modal">
+      <h2 class="text-xl font-bold mb-4">Add New Lead</h2>
+      <form id="add-lead-form" class="space-y-4">
+        <div>
+          <label for="client-name" class="block text-sm font-medium text-gray-700">Client Name</label>
+          <input type="text" id="client-name" name="client-name"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
+            required>
         </div>
-      </div>
-    </div>
 
-    <!-- Modals -->
-    <div id="add-lead-modal" class="modal-container">
-      <div class="modal">
-        <h2 class="text-xl font-bold mb-4">Add New Lead</h2>
-        <form id="add-lead-form" class="space-y-4">
-          <div>
-            <label for="client-name" class="block text-sm font-medium text-gray-700">Client Name</label>
-            <input type="text" id="client-name" name="client-name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary" required>
-          </div>
-          
-          <div>
-            <label for="lead-source" class="block text-sm font-medium text-gray-700">Source</label>
-            <select id="lead-source" name="lead-source" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
-              <option value="Website">Website</option>
-              <option value="Referral">Referral</option>
-              <option value="Cold Call">Cold Call</option>
-              <option value="Email Campaign">Email Campaign</option>
-              <option value="Partner">Partner</option>
-            </select>
-          </div>
-          
-          <div>
-            <label for="quote-amount" class="block text-sm font-medium text-gray-700">Quote Amount</label>
-            <input type="text" id="quote-amount" name="quote-amount" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary" required>
-          </div>
-          
-          <div>
-            <label for="lead-status" class="block text-sm font-medium text-gray-700">Status</label>
-            <select id="lead-status" name="lead-status" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
-              <option value="New">New</option>
-              <option value="Active">Active</option>
-              <option value="Pending">Pending</option>
-              <option value="Overdue">Overdue</option>
-            </select>
-          </div>
-          
-          <div>
-            <label for="due-date" class="block text-sm font-medium text-gray-700">Due Date</label>
-            <input type="date" id="due-date" name="due-date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary" required>
-          </div>
-          
-          <div class="flex justify-end space-x-3 pt-4">
-            <button type="button" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 cancel-modal">
-              Cancel
-            </button>
-            <button type="submit" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-opacity-90">
-              Save Lead
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <div>
+          <label for="lead-source" class="block text-sm font-medium text-gray-700">Source</label>
+          <select id="lead-source" name="lead-source"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+            <option value="Website">Website</option>
+            <option value="Referral">Referral</option>
+            <option value="Cold Call">Cold Call</option>
+            <option value="Email Campaign">Email Campaign</option>
+            <option value="Partner">Partner</option>
+          </select>
+        </div>
 
-    <div id="update-status-modal" class="modal-container">
-      <div class="modal">
-        <h2 class="text-xl font-bold mb-4">Update Lead Status</h2>
-        <form id="update-status-form" class="space-y-4">
-          <div>
-            <label for="select-lead" class="block text-sm font-medium text-gray-700">Select Lead</label>
-            <select id="select-lead" name="select-lead" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary" required>
-              <option value="" selected disabled>Select a lead...</option>
-              <option value="1">Robert Johnson</option>
-              <option value="2">Maria Garcia</option>
-              <option value="3">James Wilson</option>
-              <option value="4">Sarah Thompson</option>
-              <option value="5">Michael Brown</option>
-            </select>
-          </div>
-          
-          <div>
-            <label for="new-status" class="block text-sm font-medium text-gray-700">New Status</label>
-            <select id="new-status" name="new-status" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
-              <option value="New">New</option>
-              <option value="Active">Active</option>
-              <option value="Pending">Pending</option>
-              <option value="Overdue">Overdue</option>
-            </select>
-          </div>
-          
-          <div class="flex justify-end space-x-3 pt-4">
-            <button type="button" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 cancel-modal">
-              Cancel
-            </button>
-            <button type="submit" class="px-4 py-2 bg-secondary text-white rounded-md hover:bg-opacity-90">
-              Update Status
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <div>
+          <label for="quote-amount" class="block text-sm font-medium text-gray-700">Quote Amount</label>
+          <input type="text" id="quote-amount" name="quote-amount"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
+            required>
+        </div>
 
-    <div id="admin-action-modal" class="modal-container">
-      <div class="modal">
-        <h2 class="text-xl font-bold mb-4" id="admin-action-title">Action</h2>
-        <p id="admin-action-message">Action message here.</p>
-        <div class="flex justify-end space-x-3 pt-4 mt-4">
-          <button type="button" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 admin-modal-close">
-            Close
+        <div>
+          <label for="lead-status" class="block text-sm font-medium text-gray-700">Status</label>
+          <select id="lead-status" name="lead-status"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+            <option value="New">New</option>
+            <option value="Active">Active</option>
+            <option value="Pending">Pending</option>
+            <option value="Overdue">Overdue</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="due-date" class="block text-sm font-medium text-gray-700">Due Date</label>
+          <input type="date" id="due-date" name="due-date"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
+            required>
+        </div>
+
+        <div class="flex justify-end space-x-3 pt-4">
+          <button type="button" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 cancel-modal">
+            Cancel
+          </button>
+          <button type="submit" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-opacity-90">
+            Save Lead
           </button>
         </div>
-      </div>
+      </form>
     </div>
+  </div>
 
-    <div id="superadmin-action-modal" class="modal-container">
-      <div class="modal">
-        <h2 class="text-xl font-bold mb-4" id="superadmin-action-title">Action</h2>
-        <p id="superadmin-action-message">Action message here.</p>
-        <div class="flex justify-end space-x-3 pt-4 mt-4">
-          <button type="button" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 superadmin-modal-close">
-            Close
+  <div id="update-status-modal" class="modal-container">
+    <div class="modal">
+      <h2 class="text-xl font-bold mb-4">Update Lead Status</h2>
+      <form id="update-status-form" class="space-y-4">
+        <div>
+          <label for="select-lead" class="block text-sm font-medium text-gray-700">Select Lead</label>
+          <select id="select-lead" name="select-lead"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
+            required>
+            <option value="" selected disabled>Select a lead...</option>
+            <option value="1">Robert Johnson</option>
+            <option value="2">Maria Garcia</option>
+            <option value="3">James Wilson</option>
+            <option value="4">Sarah Thompson</option>
+            <option value="5">Michael Brown</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="new-status" class="block text-sm font-medium text-gray-700">New Status</label>
+          <select id="new-status" name="new-status"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+            <option value="New">New</option>
+            <option value="Active">Active</option>
+            <option value="Pending">Pending</option>
+            <option value="Overdue">Overdue</option>
+          </select>
+        </div>
+
+        <div class="flex justify-end space-x-3 pt-4">
+          <button type="button" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 cancel-modal">
+            Cancel
+          </button>
+          <button type="submit" class="px-4 py-2 bg-secondary text-white rounded-md hover:bg-opacity-90">
+            Update Status
           </button>
         </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="admin-action-modal" class="modal-container">
+    <div class="modal">
+      <h2 class="text-xl font-bold mb-4" id="admin-action-title">Action</h2>
+      <p id="admin-action-message">Action message here.</p>
+      <div class="flex justify-end space-x-3 pt-4 mt-4">
+        <button type="button"
+          class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 admin-modal-close">
+          Close
+        </button>
       </div>
     </div>
+  </div>
 
-    <script id="app-script">
-    // User credentials
-    const users = {
-      "csr@gmail.com": { password: "csr", role: "csr", name: "John Smith", initials: "JS" },
-      "admin@gmail.com": { password: "admin", role: "admin", name: "Amanda Lee", initials: "AL" },
-      "superadmin@gmail.com": { password: "superadmin", role: "superadmin", name: "Robert Chen", initials: "RC" }
-    };
-    
-    // Chart instances tracking
-    const charts = {};
+  <div id="superadmin-action-modal" class="modal-container">
+    <div class="modal">
+      <h2 class="text-xl font-bold mb-4" id="superadmin-action-title">Action</h2>
+      <p id="superadmin-action-message">Action message here.</p>
+      <div class="flex justify-end space-x-3 pt-4 mt-4">
+        <button type="button"
+          class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 superadmin-modal-close">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
 
-    // Current user role
-    let currentRole = "";
-
-    // DOM Elements
-    const loginContainer = document.getElementById('login-container');
-    const appContainer = document.getElementById('app-container');
-    const csrDashboard = document.getElementById('csr-dashboard');
-    const adminDashboard = document.getElementById('admin-dashboard');
-    const superadminDashboard = document.getElementById('superadmin-dashboard');
-    const loginForm = document.getElementById('login-form');
-    const loginError = document.getElementById('login-error');
-    const currentDateTime = document.getElementById('current-date-time').querySelector('span');
-    const profileMenuBtn = document.getElementById('profile-menu-btn');
-    const profileDropdown = document.getElementById('profile-dropdown');
-    const logoutBtn = document.getElementById('logout-btn');
-    const sidebarToggle = document.getElementById('sidebar-toggle');
-    const userName = document.getElementById('user-name');
-    const userInitials = document.getElementById('user-initials');
-    const addLeadModal = document.getElementById('add-lead-modal');
-    const updateStatusModal = document.getElementById('update-status-modal');
-    const addLeadForm = document.getElementById('add-lead-form');
-    const updateStatusForm = document.getElementById('update-status-form');
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', function() {
-      // Show login screen by default
-      loginContainer.style.display = 'flex';
-      
-      // Handle login form submission
-      loginForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const role = document.getElementById('role').value;
-        
-        // Check credentials
-        if (users[email] && users[email].password === password && users[email].role === role) {
-          // Login successful
-          loginContainer.style.display = 'none';
-          appContainer.style.display = 'flex';
-          
-          // Set user info
-          userName.textContent = users[email].name;
-          userInitials.textContent = users[email].initials;
-          
-          // Store current role
-          currentRole = role;
-          
-          // Show appropriate dashboard
-          showDashboard(role);
-          
-          // Initialize charts
-          initCharts();
-        } else {
-          // Login failed
-          loginError.textContent = 'Invalid email, password or role';
-          loginError.style.display = 'block';
-        }
-      });
-      
-      // Handle logout (update to include header logout button)
-      logoutBtn.addEventListener('click', handleLogout);
-
-      // Add event listener for the new header logout button
-      const headerLogoutBtn = document.getElementById('header-logout-btn');
-      if (headerLogoutBtn) {
-        headerLogoutBtn.addEventListener('click', handleLogout);
-      }
-      
-      // Handle profile dropdown
-      profileMenuBtn.addEventListener('click', function() {
-        profileDropdown.classList.toggle('hidden');
-      });
-      
-      // Close dropdown when clicking elsewhere
-      document.addEventListener('click', function(e) {
-        if (!profileMenuBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
-          profileDropdown.classList.add('hidden');
-        }
-      });
-      
-      // Toggle sidebar on mobile
-      sidebarToggle.addEventListener('click', function() {
-        document.querySelector('aside').classList.toggle('hidden');
-      });
-      
-      // Update date and time
-      updateDateTime();
-      setInterval(updateDateTime, 1000);
-      
-      // Handle sidebar navigation
-      document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', function() {
-          // Remove active class from all items
-          document.querySelectorAll('.nav-item').forEach(navItem => {
-            navItem.classList.remove('active');
-          });
-          
-          // Add active class to clicked item
-          this.classList.add('active');
-          
-          // Handle navigation based on data-section
-          const section = this.getAttribute('data-section');
-          if (section === 'dashboard') {
-            // Just show the dashboard, no scrolling needed
-            document.getElementById('pipeline-section')?.classList.add('hidden');
-            document.getElementById('commission-section')?.classList.add('hidden');
-            document.getElementById('in-progress-section').style.display = 'none';
-            
-            // Show the appropriate dashboard based on role
-            if (currentRole === 'admin') {
-              adminDashboard.style.display = 'block';
-            }
-          } else if (section === 'charts') {
-            // Scroll to charts section based on current role
-            document.getElementById('pipeline-section')?.classList.add('hidden');
-            document.getElementById('commission-section')?.classList.add('hidden');
-            document.getElementById('in-progress-section').style.display = 'none';
-            
-            // Show the appropriate dashboard based on role
-            if (currentRole === 'admin') {
-              adminDashboard.style.display = 'block';
-            }
-            
-            scrollToCharts();
-          } else if (section === 'reports') {
-            // Scroll to reports/table section based on current role
-            document.getElementById('pipeline-section')?.classList.add('hidden');
-            document.getElementById('commission-section')?.classList.add('hidden');
-            document.getElementById('in-progress-section').style.display = 'none';
-            
-            // Show the appropriate dashboard based on role
-            if (currentRole === 'admin') {
-              adminDashboard.style.display = 'block';
-            }
-            
-            scrollToReports();
-          } else if (section === 'in-progress' && currentRole === 'admin') {
-            // Show in-progress section, hide admin dashboard
-            adminDashboard.style.display = 'none';
-            document.getElementById('in-progress-section').style.display = 'block';
-          } else if (section === 'pipeline' && currentRole === 'superadmin') {
-           
-            // Show the pipeline section, hide commission section
-            document.getElementById('pipeline-section')?.classList.remove('hidden');
-            document.getElementById('commission-section')?.classList.add('hidden');
-          } else if (section === 'commission' && currentRole === 'superadmin') {
-            // Show the commission section, hide pipeline section
-            document.getElementById('commission-section')?.classList.remove('hidden');
-            document.getElementById('pipeline-section')?.classList.add('hidden');
-            // Scroll to commission table
-            const commissionTable = document.querySelector('#commission-section table');
-            if (commissionTable) {
-              commissionTable.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-          }
-        });
-      });
-      
-      // Set up modal buttons
-      document.querySelectorAll('button').forEach(button => {
-        if (button.textContent.includes('Add Lead')) {
-          button.addEventListener('click', () => {
-            addLeadModal.style.display = 'flex';
-          });
-        }
-        if (button.textContent.includes('Update Status')) {
-          button.addEventListener('click', () => {
-            updateStatusModal.style.display = 'flex';
-          });
-        }
-      });
-      
-      // Close modals with cancel buttons
-      document.querySelectorAll('.cancel-modal').forEach(button => {
-        button.addEventListener('click', () => {
-          addLeadModal.style.display = 'none';
-          updateStatusModal.style.display = 'none';
-        });
-      });
-      
-      // Handle add lead form submission
-      addLeadForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const clientName = document.getElementById('client-name').value;
-        const source = document.getElementById('lead-source').value;
-        const amount = document.getElementById('quote-amount').value;
-        const status = document.getElementById('lead-status').value;
-        const dueDate = formatDate(document.getElementById('due-date').value);
-        
-        // Add new row to the leads table
-        addLeadToTable(clientName, source, amount, status, dueDate);
-        
-        // Reset form and close modal
-        addLeadForm.reset();
-        addLeadModal.style.display = 'none';
-      });
-      
-      // Handle update status form submission
-      updateStatusForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const leadId = document.getElementById('select-lead').value;
-        const newStatus = document.getElementById('new-status').value;
-        
-        // Update the status in the table
-        updateLeadStatus(leadId, newStatus);
-        
-        // Reset form and close modal
-        updateStatusForm.reset();
-        updateStatusModal.style.display = 'none';
-      });
-      
-      // Admin action buttons
-      const adminActionModal = document.getElementById('admin-action-modal');
-      const adminActionTitle = document.getElementById('admin-action-title');
-      const adminActionMessage = document.getElementById('admin-action-message');
-      
-      document.querySelectorAll('#admin-dashboard .flex.justify-between.items-center .space-x-2 button').forEach(button => {
-        button.addEventListener('click', function() {
-          const action = button.textContent.trim();
-          adminActionTitle.textContent = action;
-          adminActionMessage.textContent = `The ${action} action was triggered successfully.`;
-          adminActionModal.style.display = 'flex';
-        });
-      });
-      
-      document.querySelectorAll('.admin-modal-close').forEach(button => {
-        button.addEventListener('click', () => {
-          adminActionModal.style.display = 'none';
-        });
-      });
-      
-      // Superadmin action buttons
-      const superadminActionModal = document.getElementById('superadmin-action-modal');
-      const superadminActionTitle = document.getElementById('superadmin-action-title');
-      const superadminActionMessage = document.getElementById('superadmin-action-message');
-      
-      document.querySelectorAll('#superadmin-dashboard .flex.justify-between.items-center .space-x-2 button').forEach(button => {
-        button.addEventListener('click', function() {
-          const action = button.textContent.trim();
-          superadminActionTitle.textContent = action;
-          superadminActionMessage.textContent = `You've accessed the ${action} functionality. This feature is coming soon.`;
-          superadminActionModal.style.display = 'flex';
-          console.log(`${action} button clicked in Super Admin dashboard`);
-        });
-      });
-      
-      document.querySelectorAll('.superadmin-modal-close').forEach(button => {
-        button.addEventListener('click', () => {
-          superadminActionModal.style.display = 'none';
-        });
-      });
-    });
-
-    // Function to handle logout
-    function handleLogout() {
-      appContainer.style.display = 'none';
-      loginContainer.style.display = 'flex';
-      loginForm.reset();
-      loginError.style.display = 'none';
-      
-      // Clean up charts
-      Object.values(charts).forEach(chart => {
-        if (chart) chart.destroy();
-      });
-      // Clear charts object
-      for (const key in charts) {
-        delete charts[key];
-      }
-      
-      currentRole = "";
-    }
-
-    // Format date for display
-    function formatDate(dateString) {
-      const date = new Date(dateString);
-      const options = { month: 'short', day: 'numeric', year: 'numeric' };
-      return date.toLocaleDateString('en-US', options);
-    }
-
-    // Add new lead to table
-    function addLeadToTable(name, source, amount, status, dueDate) {
-      const tableBody = document.querySelector('#csr-dashboard table tbody');
-      if (!tableBody) return;
-      
-      const statusClass = getStatusClass(status);
-      
-      const newRow = document.createElement('tr');
-      newRow.className = 'hover:bg-gray-50';
-      newRow.innerHTML = `
-        <td class="px-6 py-4 whitespace-nowrap">${name}</td>
-        <td class="px-6 py-4 whitespace-nowrap">${source}</td>
-        <td class="px-6 py-4 whitespace-nowrap">$${amount}</td>
-        <td class="px-6 py-4 whitespace-nowrap">
-          <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">${status}</span>
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap">${dueDate}</td>
-      `;
-      
-      tableBody.insertBefore(newRow, tableBody.firstChild);
-    }
-
-    // Get CSS class for status badge
-    function getStatusClass(status) {
-      switch (status) {
-        case 'New':
-          return 'bg-blue-100 text-blue-800';
-        case 'Active':
-          return 'bg-green-100 text-green-800';
-        case 'Pending':
-          return 'bg-yellow-100 text-yellow-800';
-        case 'Overdue':
-          return 'bg-red-100 text-red-800';
-        default:
-          return 'bg-gray-100 text-gray-800';
-      }
-    }
-
-    // Update lead status in table
-    function updateLeadStatus(leadId, newStatus) {
-      const tableRows = document.querySelectorAll('#csr-dashboard table tbody tr');
-      if (tableRows.length < leadId) return;
-      
-      const row = tableRows[leadId - 1];
-      const statusCell = row.querySelector('td:nth-child(4)');
-      const statusBadge = statusCell.querySelector('span');
-      
-      // Update status text and class
-      statusBadge.textContent = newStatus;
-      statusBadge.className = `px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClass(newStatus)}`;
-    }
-
-    // Scroll to charts section based on current role
-    function scrollToCharts() {
-      let chartElement;
-      
-      if (currentRole === 'csr') {
-        chartElement = document.getElementById('csr-followup-chart');
-      } else if (currentRole === 'admin') {
-        chartElement = document.getElementById('admin-workflow-chart');
-      } else if (currentRole === 'superadmin') {
-        chartElement = document.getElementById('revenue-chart');
-      }
-      
-      if (chartElement) {
-        chartElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }
-
-    // Scroll to reports/table section based on current role
-    function scrollToReports() {
-      let tableElement;
-      
-      if (currentRole === 'csr') {
-        tableElement = document.querySelector('#csr-dashboard table');
-      } else if (currentRole === 'admin') {
-        tableElement = document.querySelector('#admin-dashboard table');
-      } else if (currentRole === 'superadmin') {
-        tableElement = document.querySelector('#superadmin-dashboard table');
-      }
-      
-      if (tableElement) {
-        tableElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
-
-    // Show appropriate dashboard based on role
-    function showDashboard(role) {
-      // Destroy all charts first to prevent errors
-      Object.values(charts).forEach(chart => {
-        if (chart) chart.destroy();
-      });
-      
-      csrDashboard.style.display = 'none';
-      adminDashboard.style.display = 'none';
-      superadminDashboard.style.display = 'none';
-      document.getElementById('in-progress-section').style.display = 'none';
-      
-      // Hide pipeline navigation item by default
-      const pipelineNav = document.getElementById('pipeline-nav');
-      if (pipelineNav) {
-        pipelineNav.classList.add('hidden');
-      }
-      
-      // Hide commission navigation item by default
-      const commissionNav = document.getElementById('commission-nav');
-      if (commissionNav) {
-        commissionNav.classList.add('hidden');
-      }
-      
-      // Hide in-progress navigation item by default
-      const inProgressNav = document.getElementById('in-progress-nav');
-      if (inProgressNav) {
-        inProgressNav.classList.add('hidden');
-      }
-      
-      if (role === 'csr') {
-        csrDashboard.style.display = 'block';
-      } else if (role === 'admin') {
-        adminDashboard.style.display = 'block';
-        // Show in-progress navigation item only for admin
-        if (inProgressNav) {
-          inProgressNav.classList.remove('hidden');
-        }
-      } else if (role === 'superadmin') {
-        superadminDashboard.style.display = 'block';
-        
-        // Show pipeline navigation item only for superadmin
-        if (pipelineNav) {
-          pipelineNav.classList.remove('hidden');
-        }
-        
-        // Show commission navigation item only for superadmin
-        if (commissionNav) {
-          commissionNav.classList.remove('hidden');
-        }
-      }
-    }
-
-    // Update date and time display
-    function updateDateTime() {
-      const now = new Date();
-      const options = { 
-        weekday: 'short', 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      };
-      currentDateTime.textContent = now.toLocaleDateString('en-US', options);
-    }
-
-    // Initialize all charts
-    function initCharts() {
-      // CSR Follow-up Chart
-      const csrCtx = document.getElementById('csr-followup-chart');
-      if (csrCtx) {
-        // Destroy existing chart if present
-        if (charts['csr-followup-chart']) {
-          charts['csr-followup-chart'].destroy();
-        }
-        charts['csr-followup-chart'] = new Chart(csrCtx, {
-          type: 'line',
-          data: {
-            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-            datasets: [{
-              label: 'Completed',
-              data: [12, 19, 8, 15, 10],
-              borderColor: '#10b981',
-              backgroundColor: 'rgba(16, 185, 129, 0.2)',
-              tension: 0.4
-            }, {
-              label: 'Pending',
-              data: [5, 8, 12, 7, 9],
-              borderColor: '#f59e0b',
-              backgroundColor: 'rgba(245, 158, 11, 0.2)',
-              tension: 0.4
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                beginAtZero: true
-              }
-            }
-          }
-        });
-      }
-
-      // Admin Workflow Chart
-      const adminCtx = document.getElementById('admin-workflow-chart');
-      if (adminCtx) {
-        // Destroy existing chart if present
-        if (charts['admin-workflow-chart']) {
-          charts['admin-workflow-chart'].destroy();
-        }
-        charts['admin-workflow-chart'] = new Chart(adminCtx, {
-          type: 'pie',
-          data: {
-            labels: ['Complete', 'In Progress', 'Not Started'],
-            datasets: [{
-              data: [45, 35, 20],
-              backgroundColor: [
-                '#10b981',
-                '#3b82f6',
-                '#ef4444'
-              ]
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false
-          }
-        });
-      }
-
-      // Super Admin Charts
-      // Revenue Chart
-      const revenueCtx = document.getElementById('revenue-chart');
-      if (revenueCtx) {
-        // Destroy existing chart if present
-        if (charts['revenue-chart']) {
-          charts['revenue-chart'].destroy();
-        }
-        charts['revenue-chart'] = new Chart(revenueCtx, {
-          type: 'bar',
-          data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-            datasets: [{
-              label: 'Revenue',
-              data: [42, 49, 65, 58, 87, 92],
-              backgroundColor: '#3b82f6'
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                beginAtZero: true
-              }
-            }
-          }
-        });
-      }
-
-      // SLA Chart
-      const slaCtx = document.getElementById('sla-chart');
-      if (slaCtx) {
-        // Destroy existing chart if present
-        if (charts['sla-chart']) {
-          charts['sla-chart'].destroy();
-        }
-        charts['sla-chart'] = new Chart(slaCtx, {
-          type: 'line',
-          data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-            datasets: [{
-              label: 'SLA Compliance',
-              data: [92, 88, 95, 89, 94, 97],
-              borderColor: '#10b981',
-              backgroundColor: 'rgba(16, 185, 129, 0.2)',
-              tension: 0.4
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                beginAtZero: true,
-                max: 100
-              }
-            }
-          }
-        });
-      }
-
-      // Role Activity Chart
-      const roleCtx = document.getElementById('role-activity-chart');
-      if (roleCtx) {
-        // Destroy existing chart if present
-        if (charts['role-activity-chart']) {
-          charts['role-activity-chart'].destroy();
-        }
-        charts['role-activity-chart'] = new Chart(roleCtx, {
-          type: 'doughnut',
-          data: {
-            labels: ['Admin', 'Manager', 'CSR'],
-            datasets: [{
-              data: [25, 35, 40],
-              backgroundColor: [
-                '#3b82f6',
-                '#8b5cf6',
-                '#10b981'
-              ]
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false
-          }
-        });
-      }
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
+
 </html>

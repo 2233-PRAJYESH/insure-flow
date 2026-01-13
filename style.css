@@ -1,0 +1,152 @@
+body {
+  font-family: 'Inter', sans-serif;
+}
+.bg-gradient {
+  background: linear-gradient(to bottom, #10b981, #0ea5e9);
+}
+.dashboard-card {
+  transition: all 0.3s ease;
+}
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+.loader {
+  border-top-color: #10b981;
+  -webkit-animation: spinner 1.5s linear infinite;
+  animation: spinner 1.5s linear infinite;
+}
+@-webkit-keyframes spinner {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes spinner {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+/* Hide all dashboard sections by default */
+#login-container, #csr-dashboard, #admin-dashboard, #superadmin-dashboard {
+  display: none;
+}
+.nav-item {
+  transition: all 0.2s ease;
+}
+.nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.nav-item.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-left: 4px solid white;
+}
+.progress-bar {
+  transition: width 1s ease-in-out;
+}
+
+.modal-container {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 50;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* For the logout button in the sidebar */
+#logout-btn {
+  display: none; /* Hide the logout button */
+}
+
+/* Updated login background animation */
+.login-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #10b981, #0ea5e9);
+  background-size: 400% 400%;
+  animation: gradientWave 15s ease infinite;
+  z-index: 0;
+}
+
+@keyframes gradientWave {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Remove transaction-icon animations since they're no longer needed */
+.transaction-icon {
+  display: none;
+}
+
+/* CSS changes for Admin Dashboard KPI cards */
+.kpi-card {
+  position: relative;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 1.5rem;
+  border-top: 1px solid var(--accent-color);
+  border-left: 4px solid var(--accent-color);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.kpi-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  transform: scale(1.02);
+}
+.kpi-card .kpi-icon-bg {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  opacity: 0.1;
+  font-size: 3rem;
+}
+.kpi-card .kpi-value {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.sortable-header {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.sortable-header i {
+  font-size: 0.6rem;
+  margin-left: 0.25rem;
+  color: #6b7280;
+}
+
+#in-progress-section th {
+  white-space: nowrap;
+  display: table-cell;
+  padding: 0.5rem 0.75rem;
+  vertical-align: middle;
+}
+
+#in-progress-section th i {
+  font-size: 0.6rem;
+  margin-left: 0.25rem;
+  color: #6b7280;
+  display: inline-block;
+}
