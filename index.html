@@ -59,15 +59,7 @@
             required>
         </div>
 
-        <div>
-          <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
-          <select id="role" name="role"
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
-            <option value="csr">CSR</option>
-            <option value="admin">Admin</option>
-            <option value="superadmin">Super Admin</option>
-          </select>
-        </div>
+
 
         <div>
           <button type="submit"
@@ -84,44 +76,44 @@
   <!-- Main App Layout -->
   <div id="app-container" class="hidden h-screen flex overflow-hidden bg-gray-100">
     <!-- Sidebar -->
-    <div class="bg-gradient text-white w-20 lg:w-64 flex-shrink-0 flex flex-col">
+    <aside id="main-sidebar" class="bg-gradient text-white w-20 flex-shrink-0 flex flex-col">
       <div class="p-4 flex items-center justify-center lg:justify-start">
         <div class="h-10 w-10 rounded-full bg-white flex items-center justify-center text-primary text-xl">
           <i class="fas fa-shield-alt"></i>
         </div>
-        <span class="ml-3 text-xl font-bold hidden lg:block">InsureFlow</span>
+        <span class="ml-3 text-xl font-bold sidebar-text">InsureFlow</span>
       </div>
 
       <nav class="mt-8 flex-1 px-2 space-y-2">
         <a href="javascript:void(0)" class="nav-item active flex items-center px-4 py-3 text-white rounded-md"
           data-section="dashboard">
           <i class="fas fa-th-large w-6 text-center text-xl"></i>
-          <span class="ml-3 hidden lg:block">Dashboard</span>
+          <span class="ml-3 sidebar-text">Dashboard</span>
         </a>
         <a href="javascript:void(0)" class="nav-item flex items-center px-4 py-3 text-white rounded-md"
           data-section="charts">
           <i class="fas fa-chart-line w-6 text-center text-xl"></i>
-          <span class="ml-3 hidden lg:block">Charts</span>
+          <span class="ml-3 sidebar-text">Charts</span>
         </a>
         <a href="javascript:void(0)" class="nav-item flex items-center px-4 py-3 text-white rounded-md"
           data-section="reports">
           <i class="fas fa-file-alt w-6 text-center text-xl"></i>
-          <span class="ml-3 hidden lg:block">Reports</span>
+          <span class="ml-3 sidebar-text">Reports</span>
         </a>
         <a href="javascript:void(0)" id="pipeline-nav"
           class="nav-item flex items-center px-4 py-3 text-white rounded-md hidden" data-section="pipeline">
           <i class="fas fa-stream w-6 text-center text-xl"></i>
-          <span class="ml-3 hidden lg:block">Pipeline</span>
+          <span class="ml-3 sidebar-text">Pipeline</span>
         </a>
         <a href="javascript:void(0)" id="commission-nav"
           class="nav-item flex items-center px-4 py-3 text-white rounded-md hidden" data-section="commission">
           <i class="fas fa-percentage w-6 text-center text-xl"></i>
-          <span class="ml-3 hidden lg:block">Commission</span>
+          <span class="ml-3 sidebar-text">Commission</span>
         </a>
         <a href="javascript:void(0)" id="in-progress-nav"
           class="nav-item flex items-center px-4 py-3 text-white rounded-md hidden" data-section="in-progress">
           <i class="fas fa-tasks w-6 text-center text-xl"></i>
-          <span class="ml-3 hidden lg:block">In Progress</span>
+          <span class="ml-3 sidebar-text">In Progress</span>
         </a>
       </nav>
 
@@ -129,10 +121,10 @@
         <a href="javascript:void(0)" id="logout-btn"
           class="flex items-center px-4 py-2 text-white hover:bg-white hover:bg-opacity-10 rounded-md">
           <i class="fas fa-sign-out-alt w-6 text-center"></i>
-          <span class="ml-3 hidden lg:block">Logout</span>
+          <span class="ml-3 sidebar-text">Logout</span>
         </a>
       </div>
-    </div>
+    </aside>
 
     <!-- Main Content -->
     <div class="flex-1 flex flex-col overflow-hidden">

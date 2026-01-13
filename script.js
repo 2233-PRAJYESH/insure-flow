@@ -42,10 +42,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    const role = document.getElementById('role').value;
 
     // Check credentials
-    if (users[email] && users[email].password === password && users[email].role === role) {
+    if (users[email] && users[email].password === password) {
+      const role = users[email].role;
       // Login successful
       loginContainer.style.display = 'none';
       appContainer.style.display = 'flex';
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
       initCharts();
     } else {
       // Login failed
-      loginError.textContent = 'Invalid email, password or role';
+      loginError.textContent = 'Invalid email or password';
       loginError.style.display = 'block';
     }
   });
