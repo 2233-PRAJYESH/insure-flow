@@ -106,6 +106,11 @@
           <i class="fas fa-file-alt w-6 text-center text-xl"></i>
           <span class="ml-3 sidebar-text">Personal-Pipeline</span>
         </a>
+        <a href="javascript:void(0)" class="nav-item flex items-center px-4 py-3 text-white rounded-md"
+          data-section="renewal-pipeline">
+          <i class="fas fa-sync-alt w-6 text-center text-xl"></i>
+          <span class="ml-3 sidebar-text">Renewal Pipeline</span>
+        </a>
         <a href="javascript:void(0)" id="pipeline-nav"
           class="nav-item flex items-center px-4 py-3 text-white rounded-md hidden" data-section="pipeline">
           <i class="fas fa-stream w-6 text-center text-xl"></i>
@@ -1019,6 +1024,180 @@
               </div>
             </div>
           </div>
+
+        </div>
+
+        <!-- Renewal Pipeline Section -->
+        <div id="renewal-pipeline-section" class="space-y-6 mt-8 hidden">
+          <!-- Header with Title and Actions -->
+          <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+            <h1 class="text-3xl font-bold text-gray-800">
+              <i class="fas fa-sync-alt text-primary mr-2"></i>Personal Lines Renewal Pipeline
+            </h1>
+            <div class="flex flex-wrap gap-2">
+              <button id="import-csv-btn"
+                class="px-4 py-2 bg-secondary text-white rounded-md hover:bg-opacity-90 transition-all">
+                <i class="fas fa-file-upload mr-2"></i>Import CSV/Excel
+              </button>
+              <button id="add-renewal-policy-btn"
+                class="px-4 py-2 bg-primary text-white rounded-md hover:bg-opacity-90 transition-all">
+                <i class="fas fa-edit mr-2"></i>Update Lead Status
+              </button>
+            </div>
+          </div>
+
+          <!-- Filters Section -->
+          <div class="bg-white rounded-xl shadow-sm p-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <!-- Month Filter -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  <i class="fas fa-calendar-alt mr-1 text-primary"></i>Renewal Month
+                </label>
+                <select id="renewal-month-filter"
+                  class="w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all">
+                  <option value="all">All Months</option>
+                  <option value="0">January</option>
+                  <option value="1">February</option>
+                  <option value="2">March</option>
+                  <option value="3">April</option>
+                  <option value="4">May</option>
+                  <option value="5">June</option>
+                  <option value="6">July</option>
+                  <option value="7">August</option>
+                  <option value="8">September</option>
+                  <option value="9">October</option>
+                  <option value="10">November</option>
+                  <option value="11">December</option>
+                </select>
+              </div>
+
+              <!-- CSR Filter -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  <i class="fas fa-user-tie mr-1 text-primary"></i>Assigned CSR
+                </label>
+                <select id="renewal-csr-filter"
+                  class="w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all">
+                  <option value="all">All CSRs</option>
+                  <option value="CSR 1">CSR 1</option>
+                  <option value="CSR 2">CSR 2</option>
+                  <option value="CSR 3">CSR 3</option>
+                  <option value="CSR 4">CSR 4</option>
+                  <option value="CSR 5">CSR 5</option>
+                </select>
+              </div>
+
+              <!-- Policy Type Filter -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  <i class="fas fa-shield-alt mr-1 text-primary"></i>Policy Type
+                </label>
+                <select id="renewal-type-filter"
+                  class="w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all">
+                  <option value="all">All Types</option>
+                  <option value="Home">Home</option>
+                  <option value="Auto">Auto</option>
+                  <option value="Condo">Condo</option>
+                  <option value="Landlord Home/Condo">Landlord Home/Condo</option>
+                  <option value="Motorcycle">Motorcycle</option>
+                  <option value="Umbrella">Umbrella</option>
+                </select>
+              </div>
+
+              <!-- Sort By -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  <i class="fas fa-sort mr-1 text-primary"></i>Sort By
+                </label>
+                <select id="renewal-sort"
+                  class="w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all">
+                  <option value="renewalDate-asc">Renewal Date (Earliest)</option>
+                  <option value="renewalDate-desc">Renewal Date (Latest)</option>
+                  <option value="name-asc">Client Name (A-Z)</option>
+                  <option value="name-desc">Client Name (Z-A)</option>
+                  <option value="premium-asc">Premium (Low to High)</option>
+                  <option value="premium-desc">Premium (High to Low)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Results Count -->
+            <div class="mt-4 pt-4 border-t border-gray-200">
+              <p class="text-sm text-gray-600">
+                <i class="fas fa-info-circle mr-1"></i>
+                Showing <span id="renewal-count" class="font-semibold text-gray-800">0</span> policies
+              </p>
+            </div>
+          </div>
+
+          <!-- Table Section -->
+          <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200" id="renewal-table">
+                <thead class="bg-gradient-to-r from-teal-50 to-cyan-50">
+                  <tr>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-teal-800 uppercase tracking-wider whitespace-nowrap">
+                      <i class="fas fa-user mr-1"></i>Client Name
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-teal-800 uppercase tracking-wider whitespace-nowrap">
+                      <i class="fas fa-file-contract mr-1"></i>Policy Type
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-teal-800 uppercase tracking-wider whitespace-nowrap">
+                      <i class="fas fa-calendar-check mr-1"></i>Renewal Date
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-teal-800 uppercase tracking-wider whitespace-nowrap">
+                      <i class="fas fa-building mr-1"></i>Carrier
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-teal-800 uppercase tracking-wider whitespace-nowrap">
+                      <i class="fas fa-hashtag mr-1"></i>Policy #
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-teal-800 uppercase tracking-wider whitespace-nowrap">
+                      <i class="fas fa-dollar-sign mr-1"></i>Total Premium
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-teal-800 uppercase tracking-wider whitespace-nowrap">
+                      <i class="fas fa-sync mr-1"></i>Renewal Premium
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-teal-800 uppercase tracking-wider whitespace-nowrap">
+                      <i class="fas fa-user-tie mr-1"></i>Assigned CSR
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-teal-800 uppercase tracking-wider whitespace-nowrap">
+                      <i class="fas fa-handshake mr-1"></i>Referral
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-teal-800 uppercase tracking-wider whitespace-nowrap">
+                      <i class="fas fa-tasks mr-1"></i>Status
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-teal-800 uppercase tracking-wider whitespace-nowrap">
+                      <i class="fas fa-sticky-note mr-1"></i>Notes
+                    </th>
+
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200" id="renewal-table-body">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Empty State -->
+            <div id="renewal-empty-state" class="hidden text-center py-12">
+              <i class="fas fa-inbox text-gray-300 text-6xl mb-4"></i>
+              <p class="text-gray-500 text-lg">No renewal policies found</p>
+              <p class="text-gray-400 text-sm mt-2">Try adjusting your filters or import policies from CSV</p>
+            </div>
+          </div>
+        </div>
       </main>
 
       <!-- Add version label footer -->
@@ -1330,6 +1509,329 @@
           class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 superadmin-modal-close">
           Close
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Renewal Stage Update Modal -->
+  <div id="renewal-stage-modal" class="modal-container hidden fixed inset-0 z-50 overflow-y-auto"
+    style="display: none;">
+    <div class="modal relative top-20 mx-auto p-5 border w-full max-w-lg shadow-lg rounded-xl bg-white">
+      <h2 class="text-xl font-bold mb-4">Update Lead Status</h2>
+      <form id="renewal-stage-form" class="space-y-4">
+        <input type="hidden" id="renewal-policy-id">
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Select Lead</label>
+          <select id="renewal-policy-select"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+            <option value="">Select a lead...</option>
+            <!-- Populated by JS -->
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">New Status</label>
+          <select id="renewal-new-stage"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+            <option value="">Select Stage...</option>
+            <option value="Quoting in Progress">Quoting in Progress</option>
+            <option value="Same Declaration Emailed">Same Declaration Emailed</option>
+            <option value="Completed (Same)">Completed (Same)</option>
+            <option value="Quote Has been Emailed">Quote Has been Emailed</option>
+            <option value="Consent Letter Sent">Consent Letter Sent</option>
+            <option value="Completed (Switch)">Completed (Switch)</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+
+        <!-- Dynamic Fields Container -->
+        <div id="renewal-stage-fields" class="space-y-4 pt-2 border-t border-gray-100">
+          <!-- Quoting in Progress -->
+          <div id="renewal-fields-quoting" class="renewal-fields hidden space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Have you updated the client’s profile in
+                EZLynx?</label>
+              <select class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Notes/Details</label>
+              <textarea id="quoting-notes" rows="2"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"></textarea>
+            </div>
+          </div>
+
+          <!-- Same Declaration Emailed -->
+          <div id="renewal-fields-same-decl" class="renewal-fields hidden space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Did you quote in multiple carriers?</label>
+              <select class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Is the current policy set up on autopay?</label>
+              <select class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Notes/Details</label>
+              <textarea id="same-decl-notes" rows="2"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"></textarea>
+            </div>
+          </div>
+
+          <!-- Completed (Same) -->
+          <div id="renewal-fields-completed-same" class="renewal-fields hidden space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Is the policy paid for the renewal term?</label>
+              <select class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Notes/Details</label>
+              <textarea id="completed-same-notes" rows="2"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"></textarea>
+            </div>
+          </div>
+
+          <!-- Quote Has been Emailed -->
+          <div id="renewal-fields-quote-emailed" class="renewal-fields hidden space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Follow-up Date</label>
+              <input type="date" id="quote-followup"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Have you finalized the quote?</label>
+              <select class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Which carrier quote are you sending?</label>
+              <input type="text" id="quote-carrier"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">What is the quoted premium?</label>
+              <input type="text" id="quote-premium"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">How much is the client saving by switching?</label>
+              <input type="text" id="quote-savings"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Notes/Details</label>
+              <textarea id="quote-notes" rows="2"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"></textarea>
+            </div>
+          </div>
+
+          <!-- Consent Letter Sent -->
+          <div id="renewal-fields-consent" class="renewal-fields hidden space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Follow-up Date</label>
+              <input type="date" id="consent-followup"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">What is the payment method?</label>
+              <select id="payment-method"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                <option value="CC">CC</option>
+                <option value="ACH">ACH</option>
+                <option value="ESCROW">ESCROW</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">What is the payment frequency?</label>
+              <select id="payment-freq" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                <option value="Full">Full</option>
+                <option value="2-Pay">2-Pay</option>
+                <option value="4-Pay">4-Pay</option>
+                <option value="Monthly">Monthly</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Notes/Details</label>
+              <textarea id="consent-notes" rows="2"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"></textarea>
+            </div>
+          </div>
+
+          <!-- Completed (Switch) -->
+          <div id="renewal-fields-completed-switch" class="renewal-fields hidden space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Policy Number</label>
+              <input type="text" id="switch-policy-num"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Bound Premium</label>
+              <input type="text" id="switch-bound-premium"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Expected Commission</label>
+              <input type="text" id="switch-commission"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Policy documents saved in EZLynx & File
+                Center?</label>
+              <select class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Have you sent the policy documents to
+                client?</label>
+              <select class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Did you cancel the renewal term in previous
+                carrier?</label>
+              <select class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Notes/Details</label>
+              <textarea id="switch-notes" rows="2"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"></textarea>
+            </div>
+          </div>
+
+          <!-- Cancelled -->
+          <div id="renewal-fields-cancelled" class="renewal-fields hidden space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Why did the client cancel the renewal term?</label>
+              <textarea id="cancelled-notes" rows="2"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+                placeholder="Notes/Details"></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">X-date (Automatically added – Date will be 60 days
+                prior to Renewal Date)</label>
+              <input type="text" id="cancelled-x-date"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-50" readonly>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Notes/Details</label>
+              <textarea rows="2"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end space-x-3 pt-4">
+          <button type="button"
+            class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 cancel-renewal-modal">
+            Cancel
+          </button>
+          <button type="submit" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-opacity-90">
+            Update Stage
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CSV Import Modal -->
+  <div id="csv-import-modal" class="modal-container hidden fixed inset-0 z-50 overflow-y-auto" style="display: none;">
+    <div class="modal relative top-10 mx-auto p-6 border w-full max-w-2xl shadow-lg rounded-xl bg-white">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold text-gray-800">
+          <i class="fas fa-file-upload text-primary mr-2"></i>Import Renewal Policies
+        </h2>
+        <button class="cancel-csv-modal text-gray-400 hover:text-gray-600">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4">
+        <!-- Instructions -->
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <i class="fas fa-info-circle text-blue-400"></i>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-blue-700">
+                <strong>Import from EZLynx:</strong> Upload a CSV or Excel file exported from EZLynx containing renewal
+                policies.
+              </p>
+              <p class="text-xs text-blue-600 mt-1">
+                Required fields: Client Name, Policy Type, Renewal Date, Carrier, Policy Number, Total Premium
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- File Upload -->
+        <div
+          class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-all">
+          <input type="file" id="csv-file-input" accept=".csv,.xlsx,.xls" class="hidden">
+          <label for="csv-file-input" class="cursor-pointer">
+            <i class="fas fa-cloud-upload-alt text-5xl text-gray-400 mb-3"></i>
+            <p class="text-gray-600 font-medium">Click to upload or drag and drop</p>
+            <p class="text-sm text-gray-500 mt-1">CSV or Excel files only</p>
+          </label>
+          <div id="file-name-display" class="mt-3 text-sm text-gray-700 hidden">
+            <i class="fas fa-file-excel text-green-600 mr-2"></i>
+            <span id="file-name"></span>
+          </div>
+        </div>
+
+        <!-- Field Mapping Preview -->
+        <div id="field-mapping-preview" class="hidden">
+          <h3 class="font-semibold text-gray-800 mb-2">
+            <i class="fas fa-table mr-2"></i>Field Mapping
+          </h3>
+          <div class="bg-gray-50 rounded-lg p-4 space-y-2 text-sm">
+            <div class="flex items-center">
+              <i class="fas fa-check-circle text-green-500 mr-2"></i>
+              <span class="text-gray-700">Client Name, Policy Type, Renewal Date, Carrier, Policy Number, Total
+                Premium</span>
+              <span class="ml-auto text-green-600 font-medium">Auto-detected</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-exclamation-circle text-yellow-500 mr-2"></i>
+              <span class="text-gray-700">Renewal Premium</span>
+              <span class="ml-auto text-yellow-600 font-medium">Manual entry required if missing</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex justify-end space-x-3 pt-4 border-t">
+          <button type="button"
+            class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 cancel-csv-modal transition-all">
+            Cancel
+          </button>
+          <button type="button" id="process-csv-btn"
+            class="px-4 py-2 bg-primary text-white rounded-md hover:bg-opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled>
+            <i class="fas fa-upload mr-2"></i>Import Policies
+          </button>
+        </div>
       </div>
     </div>
   </div>

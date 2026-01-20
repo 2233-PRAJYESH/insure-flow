@@ -236,3 +236,96 @@ body {
     margin-left: 0.75rem;
   }
 }
+
+/* Renewal Pipeline Enhancements */
+#renewal-pipeline-section {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#renewal-table tbody tr {
+  transition: all 0.2s ease;
+}
+
+#renewal-table tbody tr:hover {
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.update-renewal-btn {
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(14, 165, 233, 0.2);
+}
+
+.update-renewal-btn:hover {
+  box-shadow: 0 4px 8px rgba(14, 165, 233, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Filter Section Styling */
+#renewal-pipeline-section select {
+  transition: all 0.2s ease;
+}
+
+#renewal-pipeline-section select:hover {
+  border-color: #0ea5e9;
+}
+
+#renewal-pipeline-section select:focus {
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+/* CSV Import Modal */
+#csv-import-modal .modal {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#csv-file-input+label:hover {
+  background-color: rgba(14, 165, 233, 0.02);
+}
+
+/* Status Badge Enhancements */
+#renewal-table .rounded-full {
+  transition: all 0.2s ease;
+}
+
+#renewal-table tr:hover .rounded-full {
+  transform: scale(1.05);
+}
+
+/* Avatar Gradient */
+.bg-gradient-to-br {
+  background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+}
+
+.from-primary {
+  --tw-gradient-from: #0ea5e9;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(14, 165, 233, 0));
+}
+
+.to-secondary {
+  --tw-gradient-to: #10b981;
+}

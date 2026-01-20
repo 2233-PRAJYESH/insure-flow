@@ -149,10 +149,15 @@ document.addEventListener('DOMContentLoaded', function () {
       const pipelineSection = document.getElementById('pipeline-section');
       const commissionSection = document.getElementById('commission-section');
       const inProgressSection = document.getElementById('in-progress-section');
+      const renewalSection = document.getElementById('renewal-pipeline-section');
 
       if (pipelineSection) pipelineSection.classList.add('hidden');
       if (commissionSection) commissionSection.classList.add('hidden');
       if (inProgressSection) inProgressSection.style.display = 'none';
+      if (renewalSection) {
+        renewalSection.classList.add('hidden');
+        renewalSection.style.display = 'none';
+      }
 
       // Standard navigation
       if (['dashboard', 'charts', 'reports'].includes(section)) {
@@ -176,6 +181,32 @@ document.addEventListener('DOMContentLoaded', function () {
         superadminDashboard.style.display = 'block';
         updateDashboardView(currentRole, 'none'); // Hide standard sections
         commissionSection.classList.remove('hidden');
+      } else if (section === 'renewal-pipeline') {
+        // Hide all dashboard containers
+        csrDashboard.style.display = 'none';
+        adminDashboard.style.display = 'none';
+        superadminDashboard.style.display = 'none';
+
+        if (renewalSection) {
+          console.log("Showing Renewal Pipeline Section");
+          renewalSection.classList.remove('hidden');
+          renewalSection.style.display = 'block'; // Force display
+
+          // Use setTimeout to ensure functions are loaded
+          setTimeout(() => {
+            try {
+              if (typeof renderRenewalTable === 'function' && typeof getFilteredAndSortedPolicies === 'function') {
+                renderRenewalTable(getFilteredAndSortedPolicies());
+              } else {
+                console.error("Renewal pipeline functions not found");
+              }
+            } catch (error) {
+              console.error("Error rendering renewal table:", error);
+            }
+          }, 100);
+        } else {
+          console.error("Renewal Pipeline Section NOT FOUND");
+        }
       }
     });
   });
@@ -338,6 +369,9 @@ document.addEventListener('DOMContentLoaded', function () {
       superadminActionModal.style.display = 'none';
     });
   });
+
+  // Initialize Renewal Pipeline
+  initRenewalPipeline();
 });
 
 // Function to handle logout
@@ -398,7 +432,15 @@ function getStatusClass(status) {
     case 'Pending':
       return 'bg-yellow-100 text-yellow-800';
     case 'Overdue':
+    case 'Cancelled':
       return 'bg-red-100 text-red-800';
+    case 'Quoting in Progress':
+    case 'Consent Letter Sent':
+    case 'Quote Has been Emailed':
+      return 'bg-purple-100 text-purple-800';
+    case 'Completed (Same)':
+    case 'Completed (Switch)':
+      return 'bg-green-100 text-green-800';
     default:
       return 'bg-gray-100 text-gray-800';
   }
@@ -665,6 +707,425 @@ function initCharts() {
         responsive: true,
         maintainAspectRatio: false
       }
+    });
+  }
+}
+
+// --- Renewal Pipeline Logic (Consolidated) ---
+
+// Data definition
+let renewalPolicies = [
+  { id: 1, name: 'Client 1', policyNum: 'POL-2025-001', type: 'Home', renewalDate: '2026-02-15', carrier: 'Progressive', premium: '$1,200', renewalPremium: '$1,350', csr: 'CSR 1', referral: 'Website', status: 'Active', notes: 'Client requested coverage review.' },
+  { id: 2, name: 'Client 2', policyNum: 'POL-2025-002', type: 'Auto', renewalDate: '2026-03-10', carrier: 'Geico', premium: '$850', renewalPremium: '$900', csr: 'CSR 2', referral: 'Email Campaign', status: 'New', notes: 'Sent intro email.' },
+  { id: 3, name: 'Client 3', policyNum: 'POL-2025-003', type: 'Condo', renewalDate: '2026-01-20', carrier: 'State Farm', premium: '$600', renewalPremium: '$650', csr: 'CSR 3', referral: 'Cold Call', status: 'Overdue', notes: 'Called twice, no answer.' },
+  { id: 4, name: 'Client 4', policyNum: 'POL-2025-004', type: 'Motorcycle', renewalDate: '2026-04-05', carrier: 'Allstate', premium: '$450', renewalPremium: '$480', csr: 'CSR 4', referral: 'Partner', status: 'Completed (Same)', notes: 'Renewal processed.' },
+  { id: 5, name: 'Client 5', policyNum: 'POL-2025-005', type: 'Umbrella', renewalDate: '2026-02-28', carrier: 'Liberty Mutual', premium: '$300', renewalPremium: '$320', csr: 'CSR 5', referral: 'Client Ref', status: 'Quoting in Progress', notes: 'Waiting on quotes from Travelers.' },
+  { id: 6, name: 'Client 6', policyNum: 'POL-2025-006', type: 'Landlord Home/Condo', renewalDate: '2026-05-12', carrier: 'Chubb', premium: '$2,500', renewalPremium: '$2,700', csr: 'CSR 1', referral: 'Agent', status: 'Consent Letter Sent', notes: 'Consent received via email.' }
+];
+
+let currentFilters = {
+  month: 'all',
+  csr: 'all',
+  type: 'all',
+  sort: 'renewalDate-asc'
+};
+
+function initRenewalPipeline() {
+  console.log('Initializing Renewal Pipeline...');
+  const tableBody = document.querySelector('#renewal-table-body');
+  const monthFilter = document.getElementById('renewal-month-filter');
+  const csrFilter = document.getElementById('renewal-csr-filter');
+  const typeFilter = document.getElementById('renewal-type-filter');
+  const sortSelect = document.getElementById('renewal-sort');
+  const importBtn = document.getElementById('import-csv-btn');
+  const addPolicyBtn = document.getElementById('add-renewal-policy-btn');
+
+  if (typeof renewalPolicies === 'undefined') {
+    console.error('renewalPolicies is undefined!');
+    return;
+  }
+
+  if (!tableBody) {
+    console.error('Renewal Table Body not found!');
+    return;
+  }
+
+  // Initial Render
+  renderRenewalTable(getFilteredAndSortedPolicies());
+
+  /* Update Button & Select Logic */
+  const populatePolicySelect = () => {
+    const select = document.getElementById('renewal-policy-select');
+    if (!select) return;
+    select.innerHTML = '<option value="">Select a Lead...</option>';
+    renewalPolicies.forEach(p => {
+      const option = document.createElement('option');
+      option.value = p.id;
+      option.textContent = `${p.name} - ${p.policyNum}`;
+      select.appendChild(option);
+    });
+  };
+
+  if (addPolicyBtn) {
+    addPolicyBtn.addEventListener('click', () => {
+      populatePolicySelect();
+      const modal = document.getElementById('renewal-stage-modal');
+      modal.classList.remove('hidden');
+      modal.style.display = 'flex';
+      document.getElementById('renewal-stage-form').reset();
+      document.querySelectorAll('.renewal-fields').forEach(el => el.classList.add('hidden'));
+    });
+  }
+
+  const policySelect = document.getElementById('renewal-policy-select');
+  if (policySelect) {
+    policySelect.addEventListener('change', (e) => {
+      if (e.target.value) {
+        openRenewalModal(e.target.value);
+      } else {
+        document.getElementById('renewal-stage-form').reset();
+        document.querySelectorAll('.renewal-fields').forEach(el => el.classList.add('hidden'));
+      }
+    });
+  }
+
+  // Filter Listeners
+  if (monthFilter) {
+    // Cloning to remove old listeners if re-initialized
+    const newMonthFilter = monthFilter.cloneNode(true);
+    monthFilter.parentNode.replaceChild(newMonthFilter, monthFilter);
+    newMonthFilter.addEventListener('change', (e) => {
+      currentFilters.month = e.target.value;
+      renderRenewalTable(getFilteredAndSortedPolicies());
+    });
+  }
+
+  if (csrFilter) {
+    const newCsrFilter = csrFilter.cloneNode(true);
+    csrFilter.parentNode.replaceChild(newCsrFilter, csrFilter);
+    newCsrFilter.addEventListener('change', (e) => {
+      currentFilters.csr = e.target.value;
+      renderRenewalTable(getFilteredAndSortedPolicies());
+    });
+  }
+
+  if (typeFilter) {
+    const newTypeFilter = typeFilter.cloneNode(true);
+    typeFilter.parentNode.replaceChild(newTypeFilter, typeFilter);
+    newTypeFilter.addEventListener('change', (e) => {
+      currentFilters.type = e.target.value;
+      renderRenewalTable(getFilteredAndSortedPolicies());
+    });
+  }
+
+  if (sortSelect) {
+    const newSortFilter = sortSelect.cloneNode(true);
+    sortSelect.parentNode.replaceChild(newSortFilter, sortSelect);
+    newSortFilter.addEventListener('change', (e) => {
+      currentFilters.sort = e.target.value;
+      renderRenewalTable(getFilteredAndSortedPolicies());
+    });
+  }
+
+  if (importBtn) {
+    // Avoid duplicate listeners
+    const newImportBtn = importBtn.cloneNode(true);
+    importBtn.parentNode.replaceChild(newImportBtn, importBtn);
+    newImportBtn.addEventListener('click', () => {
+      const modal = document.getElementById('csv-import-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.style.display = 'flex';
+      }
+    });
+  }
+
+  setupRenewalModal();
+  setupCSVImportModal();
+}
+
+function getFilteredAndSortedPolicies() {
+  let filtered = [...renewalPolicies];
+
+  if (currentFilters.month !== 'all') {
+    filtered = filtered.filter(p => {
+      const d = new Date(p.renewalDate);
+      return d.getMonth() === parseInt(currentFilters.month);
+    });
+  }
+
+  if (currentFilters.csr !== 'all') {
+    filtered = filtered.filter(p => p.csr === currentFilters.csr);
+  }
+
+  if (currentFilters.type !== 'all') {
+    filtered = filtered.filter(p => p.type === currentFilters.type);
+  }
+
+  const [sortField, sortDir] = currentFilters.sort.split('-');
+  filtered.sort((a, b) => {
+    let aVal, bVal;
+    if (sortField === 'renewalDate') {
+      aVal = new Date(a.renewalDate);
+      bVal = new Date(b.renewalDate);
+    } else if (sortField === 'name') {
+      aVal = a.name.toLowerCase();
+      bVal = b.name.toLowerCase();
+    } else if (sortField === 'premium') {
+      aVal = parseFloat(a.renewalPremium.replace(/[$,]/g, ''));
+      bVal = parseFloat(b.renewalPremium.replace(/[$,]/g, ''));
+    }
+
+    if (sortDir === 'asc') return aVal > bVal ? 1 : -1;
+    else return aVal < bVal ? 1 : -1;
+  });
+
+  return filtered;
+}
+
+function renderRenewalTable(policies) {
+  const tableBody = document.querySelector('#renewal-table-body');
+  const emptyState = document.getElementById('renewal-empty-state');
+  const countSpan = document.getElementById('renewal-count');
+
+  if (!tableBody) return;
+
+  tableBody.innerHTML = '';
+
+  if (countSpan) countSpan.textContent = policies.length;
+
+  if (policies.length === 0) {
+    if (emptyState) emptyState.classList.remove('hidden');
+    return;
+  } else {
+    if (emptyState) emptyState.classList.add('hidden');
+  }
+
+  policies.forEach(policy => {
+    const row = document.createElement('tr');
+    row.className = 'hover:bg-gray-50 transition-colors';
+
+    const renewalDate = new Date(policy.renewalDate);
+    const xDate = new Date(renewalDate);
+    xDate.setDate(xDate.getDate() - 60);
+
+    // Use global formatDate and getStatusClass from script.js
+    row.innerHTML = `
+        <td class='px-6 py-4 whitespace-nowrap'>
+          <div class='flex items-center'>
+            <div class='flex-shrink-0 h-10 w-10 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white font-semibold'>
+              ${policy.name.split(' ').map(n => n[0]).join('')}
+            </div>
+            <div class='ml-3'>
+              <div class='text-sm font-medium text-gray-900'>${policy.name}</div>
+            </div>
+          </div>
+        </td>
+        <td class='px-6 py-4 whitespace-nowrap'>
+          <span class='px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-md bg-blue-100 text-blue-800'>
+            ${policy.type}
+          </span>
+        </td>
+        <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-900'>
+          <div class='flex flex-col'>
+            <span class='font-medium'>${formatDate(policy.renewalDate)}</span>
+            <span class='text-xs text-gray-500'>X-Date: ${formatDate(xDate.toISOString().split('T')[0])}</span>
+          </div>
+        </td>
+        <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-700'>${policy.carrier}</td>
+        <td class='px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-600'>${policy.policyNum}</td>
+        <td class='px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900'>${policy.premium}</td>
+        <td class='px-6 py-4 whitespace-nowrap text-sm font-semibold text-primary'>${policy.renewalPremium}</td>
+        <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-700'>
+          <div class='flex items-center'>
+            <i class='fas fa-user-circle text-gray-400 mr-2'></i>
+            ${policy.csr}
+          </div>
+        </td>
+        <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-600'>${policy.referral}</td>
+        <td class='px-6 py-4 whitespace-nowrap'>
+           <span class='px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClass(policy.status)}'>${policy.status}</span>
+        </td>
+        <td class='px-6 py-4 text-sm text-gray-500 max-w-xs'>
+          <div class='truncate' title='${policy.notes || ''}'>${policy.notes || '-'}</div>
+        </td>
+      `;
+    tableBody.appendChild(row);
+  });
+
+
+}
+
+function openRenewalModal(id) {
+  const modal = document.getElementById('renewal-stage-modal');
+  const policy = renewalPolicies.find(p => p.id == id);
+  if (!policy) return;
+
+  /* Auto-fill X-Date for Cancelled section */
+  if (policy.renewalDate) {
+    const rDate = new Date(policy.renewalDate);
+    const xDate = new Date(rDate);
+    xDate.setDate(rDate.getDate() - 60);
+    const xDateInput = document.getElementById('cancelled-x-date');
+    if (xDateInput) xDateInput.value = xDate.toISOString().split('T')[0];
+  }
+
+  document.getElementById('renewal-stage-form').reset();
+  document.getElementById('renewal-policy-id').value = id;
+
+  // Set Select Value
+  const pSelect = document.getElementById('renewal-policy-select');
+  if (pSelect) pSelect.value = id;
+
+  document.querySelectorAll('.renewal-fields').forEach(el => el.classList.add('hidden'));
+
+  const stageSelect = document.getElementById('renewal-new-stage');
+  if (Array.from(stageSelect.options).some(option => option.value === policy.status)) {
+    stageSelect.value = policy.status;
+    stageSelect.dispatchEvent(new Event('change'));
+  }
+
+  modal.classList.remove('hidden');
+  modal.style.display = 'flex';
+}
+
+function setupRenewalModal() {
+  const modal = document.getElementById('renewal-stage-modal');
+  let form = document.getElementById('renewal-stage-form');
+
+  if (!form) return;
+
+  // Clone form to clear previous listeners (avoid duplicates on re-init)
+  const newForm = form.cloneNode(true);
+  form.parentNode.replaceChild(newForm, form);
+  form = newForm;
+
+  // 1. Cancel/Close Button Listener
+  const cancelBtn = form.querySelector('.cancel-renewal-modal');
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+      modal.classList.add('hidden');
+    });
+  }
+
+  // 2. Stage Select Change Listener
+  const stageSelect = document.getElementById('renewal-new-stage');
+  const allFields = document.querySelectorAll('.renewal-fields');
+
+  if (stageSelect) {
+    stageSelect.addEventListener('change', function () {
+      allFields.forEach(el => el.classList.add('hidden'));
+      const val = this.value;
+      let targetId = '';
+      if (val === 'Quoting in Progress') targetId = 'renewal-fields-quoting';
+      else if (val === 'Same Declaration Emailed') targetId = 'renewal-fields-same-decl';
+      else if (val === 'Completed (Same)') targetId = 'renewal-fields-completed-same';
+      else if (val === 'Quote Has been Emailed') targetId = 'renewal-fields-quote-emailed';
+      else if (val === 'Consent Letter Sent') targetId = 'renewal-fields-consent';
+      else if (val === 'Completed (Switch)') targetId = 'renewal-fields-completed-switch';
+      else if (val === 'Cancelled') targetId = 'renewal-fields-cancelled';
+
+      if (targetId) {
+        const target = document.getElementById(targetId);
+        if (target) target.classList.remove('hidden');
+      }
+    });
+  }
+
+  // 3. Form Submit Listener
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const id = document.getElementById('renewal-policy-id').value;
+    const currentStageSelect = document.getElementById('renewal-new-stage');
+    const newStage = currentStageSelect.value;
+    const policy = renewalPolicies.find(p => p.id == id);
+
+    if (policy) {
+      policy.status = newStage;
+
+      // Capture Notes and Fields
+      let notesId = '';
+      if (newStage === 'Quoting in Progress') notesId = 'quoting-notes';
+      else if (newStage === 'Same Declaration Emailed') notesId = 'same-decl-notes';
+      else if (newStage === 'Completed (Same)') notesId = 'completed-same-notes';
+      else if (newStage === 'Quote Has been Emailed') {
+        notesId = 'quote-notes';
+        const carrier = document.getElementById('quote-carrier');
+        const premium = document.getElementById('quote-premium');
+        if (carrier && carrier.value) policy.carrier = carrier.value;
+        if (premium && premium.value) policy.renewalPremium = premium.value;
+      }
+      else if (newStage === 'Consent Letter Sent') notesId = 'consent-notes';
+      else if (newStage === 'Completed (Switch)') {
+        notesId = 'switch-notes';
+        const bound = document.getElementById('switch-bound-premium');
+        if (bound && bound.value) policy.renewalPremium = bound.value;
+      }
+      else if (newStage === 'Cancelled') notesId = 'cancelled-notes';
+
+      if (notesId) {
+        const notesInput = document.getElementById(notesId);
+        if (notesInput) {
+          policy.notes = notesInput.value;
+        }
+      }
+
+      renderRenewalTable(getFilteredAndSortedPolicies());
+    }
+    modal.style.display = 'none';
+    modal.classList.add('hidden');
+    form.reset();
+    allFields.forEach(el => el.classList.add('hidden'));
+  });
+}
+
+function setupCSVImportModal() {
+  const modal = document.getElementById('csv-import-modal');
+  const closeBtns = document.querySelectorAll('.cancel-csv-modal');
+  const fileInput = document.getElementById('csv-file-input');
+  const fileNameDisplay = document.getElementById('file-name-display');
+  const fileName = document.getElementById('file-name');
+  const processBtn = document.getElementById('process-csv-btn');
+  const fieldMapping = document.getElementById('field-mapping-preview');
+
+  closeBtns.forEach(btn => {
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+    newBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+      modal.classList.add('hidden');
+    });
+  });
+
+  if (fileInput) {
+    const newFileInput = fileInput.cloneNode(true);
+    fileInput.parentNode.replaceChild(newFileInput, fileInput);
+    newFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        fileName.textContent = file.name;
+        fileNameDisplay.classList.remove('hidden');
+        fieldMapping.classList.remove('hidden');
+        processBtn.disabled = false;
+      }
+    });
+  }
+
+  if (processBtn) {
+    const newProcessBtn = processBtn.cloneNode(true);
+    processBtn.parentNode.replaceChild(newProcessBtn, processBtn);
+    newProcessBtn.addEventListener('click', () => {
+      const newPolicies = [
+        { id: renewalPolicies.length + 1, name: 'Michael Scott', policyNum: 'POL-2025-007', type: 'Home', renewalDate: '2026-06-15', carrier: 'Nationwide', premium: '$1,800', renewalPremium: '$1,950', csr: 'Maria Garcia', referral: 'CSV Import', status: 'New', notes: 'Imported from EZLynx' },
+        { id: renewalPolicies.length + 2, name: 'Pam Beesly', policyNum: 'POL-2025-008', type: 'Auto', renewalDate: '2026-07-20', carrier: 'Progressive', premium: '$950', renewalPremium: '$1,000', csr: 'John Smith', referral: 'CSV Import', status: 'New', notes: 'Imported from EZLynx' }
+      ];
+      renewalPolicies = [...renewalPolicies, ...newPolicies];
+      renderRenewalTable(getFilteredAndSortedPolicies());
+
+      modal.style.display = 'none';
+      modal.classList.add('hidden');
+      alert('Successfully imported policies!');
     });
   }
 }
