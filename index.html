@@ -126,6 +126,11 @@
           <i class="fas fa-tasks w-6 text-center text-xl"></i>
           <span class="ml-3 sidebar-text">In Progress</span>
         </a>
+        <a href="javascript:void(0)" id="accounting-nav"
+          class="nav-item flex items-center px-4 py-3 text-white rounded-md hidden" data-section="reports">
+          <i class="fas fa-calculator w-6 text-center text-xl"></i>
+          <span class="ml-3 sidebar-text">Total Lead Details</span>
+        </a>
       </nav>
 
       <div class="p-4">
@@ -821,6 +826,55 @@
             </div>
           </div>
 
+          <!-- Super Admin Pipeline Table -->
+          <div id="superadmin-section-pipeline" class="hidden">
+            <div class="bg-white rounded-xl shadow-sm p-6 overflow-hidden">
+              <h2 class="text-lg font-medium text-gray-800 mb-4 text-center">Super Admin</h2>
+              <div class="overflow-x-auto">
+                <table class="min-w-full border-collapse border border-gray-200">
+                  <thead class="bg-sky-400 text-white">
+                    <tr>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider whitespace-nowrap">Pipeline Stages</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider whitespace-nowrap">Date</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider whitespace-nowrap">Client Name</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider whitespace-nowrap">Request Type</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider whitespace-nowrap">Policy Type</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider whitespace-nowrap">Effective Date</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider whitespace-nowrap">Follow-up Date</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider whitespace-nowrap">Assigned CSR</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider whitespace-nowrap">Referral</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider whitespace-nowrap">Policy Number</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider whitespace-nowrap">Bound Premium</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider whitespace-nowrap">Expected Commission</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider whitespace-nowrap">Actual Commission</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider whitespace-nowrap">Notes/Details</th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white">
+                    <tr class="hover:bg-gray-50 text-sm">
+                      <td class="border border-gray-300 px-4 py-2">
+                        <span class="px-2 py-1 rounded bg-yellow-400 text-white text-xs font-bold">Document Collection</span>
+                      </td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">Date when...</td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">Name of the...</td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">What the client...</td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">Which type of...</td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">Date when...</td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">Date when...</td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">CSR Assigned...</td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">If the client...</td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">Policy number...</td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">Total premium...</td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">Expected...</td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">Actual...</td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">Should be a box...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
           <!-- Pipeline Section -->
           <div id="pipeline-section" class="space-y-6 mt-8 hidden">
             <div class="flex justify-between items-center">
@@ -1025,6 +1079,97 @@
             </div>
           </div>
 
+        </div>
+
+        <!-- Accounting Dashboard -->
+        <div id="accounting-dashboard" class="space-y-6 hidden">
+          <div class="flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-800">Business Operations Overview</h1>
+          </div>
+
+          <!-- KPI Cards -->
+          <div id="accounting-section-dashboard">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div class="dashboard-card bg-gradient-to-br from-cyan-500 to-cyan-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
+                    <i class="fas fa-coins text-2xl"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h2 class="text-sm font-medium text-gray-100">Total Commissions</h2>
+                    <p class="text-2xl font-bold">$42.8K</p>
+                  </div>
+                </div>
+              </div>
+              <div class="dashboard-card bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:scale-105">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 rounded-full p-3 bg-white/20 backdrop-blur-sm">
+                    <i class="fas fa-check-double text-2xl"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h2 class="text-sm font-medium text-gray-100">Paid Policies</h2>
+                    <p class="text-2xl font-bold">156</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Accounting Pipeline Table -->
+          <div id="accounting-section-reports">
+            <div class="bg-white rounded-xl shadow-sm p-6 overflow-hidden">
+              <h2 class="text-lg font-medium text-gray-800 mb-4 text-center">Total Lead Details</h2>
+              <div class="overflow-x-auto">
+                <table class="min-w-full border-collapse border border-gray-200">
+                  <thead class="bg-sky-400 text-white">
+                    <tr>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider">Pipeline Stages</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider">Client Name</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider">Policy Type</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider">Effective Date</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider">Assigned CSR</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider">Referral</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider">Policy Number</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider">Bound Premium</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider">Expected Commission</th>
+                      <th class="border border-gray-300 px-4 py-2 text-xs uppercase tracking-wider">Actual Commission</th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white">
+                    <tr class="hover:bg-gray-50 text-sm">
+                      <td class="border border-gray-300 px-4 py-2">
+                        <span class="px-2 py-1 rounded bg-yellow-400 text-white text-xs font-bold">Lead Capture</span>
+                      </td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">Name of the client</td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">Which type of policy...</td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">Date when the policy...</td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">CSR Assigned by...</td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">If the client was...</td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">Policy number if bound</td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">Total premium of...</td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">Expected commission...</td>
+                      <td class="border border-gray-300 px-4 py-2 italic font-serif text-gray-400">Actual commission...</td>
+                    </tr>
+                    <!-- Data Rows -->
+                    <tr class="hover:bg-gray-50 text-sm">
+                      <td class="border border-gray-300 px-4 py-2">
+                         <span class="px-2 py-1 rounded bg-green-500 text-white text-xs font-bold">Completed</span>
+                      </td>
+                      <td class="border border-gray-300 px-4 py-2">John Carter</td>
+                      <td class="border border-gray-300 px-4 py-2">Home</td>
+                      <td class="border border-gray-300 px-4 py-2">Oct 20, 2025</td>
+                      <td class="border border-gray-300 px-4 py-2">Sarah Thompson</td>
+                      <td class="border border-gray-300 px-4 py-2">Website</td>
+                      <td class="border border-gray-300 px-4 py-2">POL-7721</td>
+                      <td class="border border-gray-300 px-4 py-2">$1,250</td>
+                      <td class="border border-gray-300 px-4 py-2">$187.50</td>
+                      <td class="border border-gray-300 px-4 py-2">$187.50</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Renewal Pipeline Section -->
@@ -1418,17 +1563,21 @@
           <div id="fields-completed" class="status-fields hidden space-y-3">
             <div>
               <label class="block text-sm font-medium text-gray-700">Policy Number</label>
-              <input type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+              <input type="text" id="update-policy-num" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
             </div>
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700">Bound Premium</label>
-                <input type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                <input type="text" id="update-bound-premium" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700">Expected Commission</label>
-                <input type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                <input type="text" id="update-expected-commission" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
               </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Actual Commission</label>
+              <input type="text" id="update-actual-commission" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">Policy documents saved in EZLynx & File

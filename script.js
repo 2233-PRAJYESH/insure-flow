@@ -2,7 +2,8 @@
 const users = {
   "csr@gmail.com": { password: "csr", role: "csr", name: "csr", initials: "JS" },
   "admin@gmail.com": { password: "admin", role: "admin", name: "admin", initials: "AL" },
-  "superadmin@gmail.com": { password: "superadmin", role: "superadmin", name: "superadmin", initials: "RC" }
+  "superadmin@gmail.com": { password: "superadmin", role: "superadmin", name: "superadmin", initials: "RC" },
+  "accounting@gmail.com": { password: "accounting", role: "accounting", name: "accounting", initials: "AC" }
 };
 
 // Chart instances tracking
@@ -11,66 +12,144 @@ const charts = {};
 // Current user role
 let currentRole = "";
 
-// DOM Elements
-const loginContainer = document.getElementById('login-container');
-const appContainer = document.getElementById('app-container');
-const csrDashboard = document.getElementById('csr-dashboard');
-const adminDashboard = document.getElementById('admin-dashboard');
-const superadminDashboard = document.getElementById('superadmin-dashboard');
-const loginForm = document.getElementById('login-form');
-const loginError = document.getElementById('login-error');
-const currentDateTime = document.getElementById('current-date-time').querySelector('span');
-const profileMenuBtn = document.getElementById('profile-menu-btn');
-const profileDropdown = document.getElementById('profile-dropdown');
-const logoutBtn = document.getElementById('logout-btn');
-const sidebarToggle = document.getElementById('sidebar-toggle');
-const userName = document.getElementById('user-name');
-const userInitials = document.getElementById('user-initials');
-const addLeadModal = document.getElementById('add-lead-modal');
-const updateStatusModal = document.getElementById('update-status-modal');
-const addLeadForm = document.getElementById('add-lead-form');
-const updateStatusForm = document.getElementById('update-status-form');
+// Global Leads Data
+let globalLeads = [
+  { 
+    id: 1, 
+    pipelineStage: 'Completed', 
+    date: '2025-10-10', 
+    clientName: 'John Carter', 
+    requestType: 'New Lead', 
+    policyType: 'Home', 
+    effectiveDate: '2025-10-20', 
+    followUpDate: '2025-10-15', 
+    assignedCSR: 'Sarah Thompson', 
+    referral: 'Website', 
+    policyNumber: 'POL-7721', 
+    boundPremium: '$1,250', 
+    expectedCommission: '$187.50', 
+    actualCommission: '$187.50', 
+    notes: 'Client requested review.' 
+  },
+  { 
+    id: 2, 
+    pipelineStage: 'Document Collection', 
+    date: '2025-10-12', 
+    clientName: 'Mary Smith', 
+    requestType: 'Endorsement', 
+    policyType: 'Auto', 
+    effectiveDate: '2025-10-22', 
+    followUpDate: '2025-10-18', 
+    assignedCSR: 'John Smith', 
+    referral: 'Referral', 
+    policyNumber: '-', 
+    boundPremium: '-', 
+    expectedCommission: '-', 
+    actualCommission: '-', 
+    notes: 'Waiting for DL copy.' 
+  },
+  {
+    id: 3,
+    pipelineStage: 'Lead Capture',
+    date: '2025-10-15',
+    clientName: 'Robert Wilson',
+    requestType: 'New Lead',
+    policyType: 'Home',
+    effectiveDate: '2025-11-01',
+    followUpDate: '2025-10-20',
+    assignedCSR: 'Michael Brown',
+    referral: 'Twitter',
+    policyNumber: '-',
+    boundPremium: '-',
+    expectedCommission: '-',
+    actualCommission: '-',
+    notes: 'Very interested in umbrella as well.'
+  }
+];
+
+// DOM Elements (Global variables, initialized in DOMContentLoaded)
+let loginContainer, appContainer, csrDashboard, adminDashboard, superadminDashboard, accountingDashboard;
+let loginForm, loginError, currentDateTime, profileMenuBtn, profileDropdown, logoutBtn, sidebarToggle;
+let userName, userInitials, addLeadModal, updateStatusModal, addLeadForm, updateStatusForm;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', function () {
+  // Initialize DOM Elements
+  loginContainer = document.getElementById('login-container');
+  appContainer = document.getElementById('app-container');
+  csrDashboard = document.getElementById('csr-dashboard');
+  adminDashboard = document.getElementById('admin-dashboard');
+  superadminDashboard = document.getElementById('superadmin-dashboard');
+  accountingDashboard = document.getElementById('accounting-dashboard');
+  loginForm = document.getElementById('login-form');
+  loginError = document.getElementById('login-error');
+  
+  const dtEl = document.getElementById('current-date-time');
+  currentDateTime = dtEl ? dtEl.querySelector('span') : null;
+  
+  profileMenuBtn = document.getElementById('profile-menu-btn');
+  profileDropdown = document.getElementById('profile-dropdown');
+  logoutBtn = document.getElementById('logout-btn');
+  sidebarToggle = document.getElementById('sidebar-toggle');
+  userName = document.getElementById('user-name');
+  userInitials = document.getElementById('user-initials');
+  addLeadModal = document.getElementById('add-lead-modal');
+  updateStatusModal = document.getElementById('update-status-modal');
+  addLeadForm = document.getElementById('add-lead-form');
+  updateStatusForm = document.getElementById('update-status-form');
+
   // Show login screen by default
-  loginContainer.style.display = 'flex';
+  if (loginContainer) loginContainer.style.display = 'flex';
+
+  // Initial render of shared data
+  renderAllLeads();
+
+  // Update clock
+  updateDateTime();
+  setInterval(updateDateTime, 60000);
 
   // Handle login form submission
-  loginForm.addEventListener('submit', function (e) {
-    e.preventDefault();
+  if (loginForm) {
+    loginForm.addEventListener('submit', function (e) {
+      e.preventDefault();
 
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
 
-    // Check credentials
-    if (users[email] && users[email].password === password) {
-      const role = users[email].role;
-      // Login successful
-      loginContainer.style.display = 'none';
-      appContainer.style.display = 'flex';
+      // Check credentials
+      if (users[email] && users[email].password === password) {
+        const role = users[email].role;
+        // Store current role
+        currentRole = role;
+        
+        // Login successful
+        if (loginContainer) loginContainer.style.display = 'none';
+        if (appContainer) appContainer.style.display = 'flex';
 
-      // Set user info
-      userName.textContent = users[email].name;
-      userInitials.textContent = users[email].initials;
+        // Set user info
+        if (userName) userName.textContent = users[email].name;
+        if (userInitials) userInitials.textContent = users[email].initials;
 
-      // Store current role
-      currentRole = role;
+        // Show appropriate dashboard
+        showDashboard(role);
 
-      // Show appropriate dashboard
-      showDashboard(role);
+        // Render shared leads data
+        renderAllLeads();
 
-      // Initialize charts
-      initCharts();
-    } else {
-      // Login failed
-      loginError.textContent = 'Invalid email or password';
-      loginError.style.display = 'block';
-    }
-  });
+        // Initialize charts
+        initCharts();
+      } else {
+        // Login failed
+        if (loginError) {
+          loginError.textContent = 'Invalid email or password';
+          loginError.style.display = 'block';
+        }
+      }
+    });
+  }
 
   // Handle logout (update to include header logout button)
-  logoutBtn.addEventListener('click', handleLogout);
+  if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
 
   // Add event listener for the new dropdown logout button
   const dropdownLogoutBtn = document.getElementById('dropdown-logout-btn');
@@ -79,41 +158,51 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Handle profile dropdown
-  profileMenuBtn.addEventListener('click', function () {
-    profileDropdown.classList.toggle('hidden');
-  });
+  if (profileMenuBtn && profileDropdown) {
+    profileMenuBtn.addEventListener('click', function () {
+      profileDropdown.classList.toggle('hidden');
+    });
+  }
 
   // Close dropdown when clicking elsewhere
   document.addEventListener('click', function (e) {
-    if (!profileMenuBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
-      profileDropdown.classList.add('hidden');
+    if (profileMenuBtn && profileDropdown) {
+      if (!profileMenuBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+        profileDropdown.classList.add('hidden');
+      }
     }
   });
 
   // Toggle sidebar on mobile
-  sidebarToggle.addEventListener('click', function () {
-    const sidebar = document.getElementById('main-sidebar');
-    const backdrop = document.getElementById('sidebar-backdrop');
-
-    sidebar.classList.toggle('-translate-x-full');
-    backdrop.classList.toggle('hidden');
-    // small delay to allow display:block to apply before opacity transition
-    setTimeout(() => {
-      backdrop.classList.toggle('opacity-0');
-    }, 10);
-  });
+  if (sidebarToggle) {
+    sidebarToggle.addEventListener('click', function () {
+      const sidebar = document.getElementById('main-sidebar');
+      const backdrop = document.getElementById('sidebar-backdrop');
+      if (sidebar && backdrop) {
+        sidebar.classList.toggle('-translate-x-full');
+        backdrop.classList.toggle('hidden');
+        // small delay to allow display:block to apply before opacity transition
+        setTimeout(() => {
+          backdrop.classList.toggle('opacity-0');
+        }, 10);
+      }
+    });
+  }
 
   // Close sidebar when clicking backdrop
-  document.getElementById('sidebar-backdrop').addEventListener('click', function () {
-    const sidebar = document.getElementById('main-sidebar');
-    const backdrop = document.getElementById('sidebar-backdrop');
-
-    sidebar.classList.add('-translate-x-full');
-    backdrop.classList.add('opacity-0');
-    setTimeout(() => {
-      backdrop.classList.add('hidden');
-    }, 300);
-  });
+  const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+  if (sidebarBackdrop) {
+    sidebarBackdrop.addEventListener('click', function () {
+      const sidebar = document.getElementById('main-sidebar');
+      if (sidebar) {
+        sidebar.classList.add('-translate-x-full');
+        this.classList.add('opacity-0');
+        setTimeout(() => {
+          this.classList.add('hidden');
+        }, 300);
+      }
+    });
+  }
 
   // Update date and time
   updateDateTime();
@@ -150,10 +239,12 @@ document.addEventListener('DOMContentLoaded', function () {
       const commissionSection = document.getElementById('commission-section');
       const inProgressSection = document.getElementById('in-progress-section');
       const renewalSection = document.getElementById('renewal-pipeline-section');
+      const superadminPipelineSection = document.getElementById('superadmin-section-pipeline');
 
       if (pipelineSection) pipelineSection.classList.add('hidden');
       if (commissionSection) commissionSection.classList.add('hidden');
       if (inProgressSection) inProgressSection.style.display = 'none';
+      if (superadminPipelineSection) superadminPipelineSection.classList.add('hidden');
       if (renewalSection) {
         renewalSection.classList.add('hidden');
         renewalSection.style.display = 'none';
@@ -161,10 +252,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // Standard navigation
       if (['dashboard', 'charts', 'reports'].includes(section)) {
-        // Ensure the main dashboard container is visible
-        if (currentRole === 'csr') csrDashboard.style.display = 'block';
-        if (currentRole === 'admin') adminDashboard.style.display = 'block';
-        if (currentRole === 'superadmin') superadminDashboard.style.display = 'block';
+        // Hide ALL special sections first
+        if (inProgressSection) inProgressSection.style.display = 'none';
+        if (renewalSection) {
+          renewalSection.classList.add('hidden');
+          renewalSection.style.display = 'none';
+        }
+        if (pipelineSection) pipelineSection.classList.add('hidden');
+        if (commissionSection) commissionSection.classList.add('hidden');
+        if (superadminPipelineSection) superadminPipelineSection.classList.add('hidden');
+
+        // Ensure ONLY the appropriate dashboard for the current role is visible
+        if (csrDashboard) csrDashboard.style.display = (currentRole === 'csr') ? 'block' : 'none';
+        if (adminDashboard) adminDashboard.style.display = (currentRole === 'admin') ? 'block' : 'none';
+        if (superadminDashboard) superadminDashboard.style.display = (currentRole === 'superadmin') ? 'block' : 'none';
+        if (accountingDashboard) accountingDashboard.style.display = (currentRole === 'accounting') ? 'block' : 'none';
 
         updateDashboardView(currentRole, section);
       }
@@ -176,16 +278,18 @@ document.addEventListener('DOMContentLoaded', function () {
         // Pipeline is inside superadmin dashboard container but separate from dashboard/charts/reports
         superadminDashboard.style.display = 'block';
         updateDashboardView(currentRole, 'none'); // Hide standard sections
-        pipelineSection.classList.remove('hidden');
+        if (superadminPipelineSection) superadminPipelineSection.classList.remove('hidden');
+        else pipelineSection.classList.remove('hidden');
       } else if (section === 'commission' && currentRole === 'superadmin') {
         superadminDashboard.style.display = 'block';
         updateDashboardView(currentRole, 'none'); // Hide standard sections
         commissionSection.classList.remove('hidden');
       } else if (section === 'renewal-pipeline') {
-        // Hide all dashboard containers
-        csrDashboard.style.display = 'none';
-        adminDashboard.style.display = 'none';
-        superadminDashboard.style.display = 'none';
+        // Hide all main dashboard containers
+        if (csrDashboard) csrDashboard.style.display = 'none';
+        if (adminDashboard) adminDashboard.style.display = 'none';
+        if (superadminDashboard) superadminDashboard.style.display = 'none';
+        if (accountingDashboard) accountingDashboard.style.display = 'none';
 
         if (renewalSection) {
           console.log("Showing Renewal Pipeline Section");
@@ -240,13 +344,38 @@ document.addEventListener('DOMContentLoaded', function () {
     const clientName = document.getElementById('client-name').value;
     const requestType = document.getElementById('request-type').value;
     const policyType = document.getElementById('policy-type').value;
-    const followUpDate = formatDate(document.getElementById('follow-up-date').value);
+    const effectiveDate = document.getElementById('effective-date').value;
+    const assignedCSR = document.getElementById('assigned-csr').value || 'Unassigned';
+    const referral = document.getElementById('referral').value || '-';
+    const notes = document.getElementById('notes').value || '-';
 
     // Status is not in the form but we can infer it or default it
-    const status = 'New';
+    const status = 'Lead Capture';
 
-    // Add new row to the leads table
-    addLeadToTable(clientName, requestType, policyType, status, followUpDate);
+    // Create new lead object
+    const newLead = {
+      id: globalLeads.length + 1,
+      pipelineStage: status,
+      date: new Date().toISOString().split('T')[0],
+      clientName: clientName,
+      requestType: requestType,
+      policyType: policyType,
+      effectiveDate: effectiveDate,
+      followUpDate: followUpDate,
+      assignedCSR: assignedCSR,
+      referral: referral,
+      policyNumber: '-',
+      boundPremium: '-',
+      expectedCommission: '-',
+      actualCommission: '-',
+      notes: notes
+    };
+
+    // Add to global array
+    globalLeads.unshift(newLead);
+
+    // Refresh all views
+    renderAllLeads();
 
     // Reset form and close modal
     addLeadForm.reset();
@@ -260,8 +389,27 @@ document.addEventListener('DOMContentLoaded', function () {
     const leadId = document.getElementById('select-lead').value;
     const newStatus = document.getElementById('new-status').value;
 
-    // Update the status in the table
-    updateLeadStatus(leadId, newStatus);
+    // Update the status in the global array
+    const lead = globalLeads.find(l => l.id == leadId);
+    if (lead) {
+        lead.pipelineStage = newStatus;
+        
+        // If completed or updating fields, capture them
+        if (newStatus === 'Completed') {
+            const pNum = document.getElementById('update-policy-num').value;
+            const bPrem = document.getElementById('update-bound-premium').value;
+            const eComm = document.getElementById('update-expected-commission').value;
+            const aComm = document.getElementById('update-actual-commission').value;
+
+            if (pNum) lead.policyNumber = pNum;
+            if (bPrem) lead.boundPremium = bPrem.startsWith('$') ? bPrem : '$' + bPrem;
+            if (eComm) lead.expectedCommission = eComm.startsWith('$') ? eComm : '$' + eComm;
+            if (aComm) lead.actualCommission = aComm.startsWith('$') ? aComm : '$' + aComm;
+        }
+    }
+
+    // Refresh all views
+    renderAllLeads();
 
     // Reset form and close modal
     updateStatusForm.reset();
@@ -272,18 +420,15 @@ document.addEventListener('DOMContentLoaded', function () {
   const reportsUpdateStatusBtn = document.getElementById('reports-update-status-btn');
   if (reportsUpdateStatusBtn) {
     reportsUpdateStatusBtn.addEventListener('click', function () {
-      // Populate leads dynamic from table
+      // Populate leads dynamic from global array
       const leadSelect = document.getElementById('select-lead');
-      const tableRows = document.querySelectorAll('#csr-section-reports table tbody tr');
-
+      
       leadSelect.innerHTML = '<option value="" selected disabled>Select a lead...</option>';
 
-      tableRows.forEach((row, index) => {
-        const clientName = row.querySelector('td:nth-child(1)').textContent;
-        // value is the 1-based index to match updateLeadStatus logic
+      globalLeads.forEach((lead) => {
         const option = document.createElement('option');
-        option.value = index + 1;
-        option.textContent = clientName;
+        option.value = lead.id;
+        option.textContent = lead.clientName;
         leadSelect.appendChild(option);
       });
 
@@ -393,33 +538,141 @@ function handleLogout() {
   currentRole = "";
 }
 
-// Format date for display
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  const options = { month: 'short', day: 'numeric', year: 'numeric' };
-  return date.toLocaleDateString('en-US', options);
+// Function to render all leads in their respective tables
+function renderAllLeads() {
+    renderCSRLeads();
+    renderAdminLeads();
+    renderSuperAdminPipeline();
+    renderAccountingLeads();
 }
 
-// Add new lead to table
+// Render CSR Leads Table
+function renderCSRLeads() {
+    const tableBody = document.querySelector('#csr-section-reports table tbody');
+    if (!tableBody) return;
+
+    tableBody.innerHTML = '';
+    globalLeads.forEach(lead => {
+        const statusClass = getStatusClass(lead.pipelineStage);
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-gray-50';
+        row.innerHTML = `
+            <td class="px-6 py-4 whitespace-nowrap">${lead.clientName}</td>
+            <td class="px-6 py-4 whitespace-nowrap">${lead.requestType}</td>
+            <td class="px-6 py-4 whitespace-nowrap">${lead.policyType}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">${lead.pipelineStage}</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">${formatDate(lead.followUpDate)}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+// Render Admin In-Progress Table
+function renderAdminLeads() {
+    const tableBody = document.querySelector('#in-progress-section table tbody');
+    if (!tableBody) return;
+
+    tableBody.innerHTML = '';
+    globalLeads.forEach((lead, index) => {
+        const row = document.createElement('tr');
+        row.className = index % 2 === 0 ? 'bg-white' : 'bg-green-50';
+        row.innerHTML = `
+            <td class="px-4 py-3 whitespace-nowrap">${index + 1}</td>
+            <td class="px-4 py-3 whitespace-nowrap">${formatDate(lead.date)}</td>
+            <td class="px-4 py-3 whitespace-nowrap">${lead.boundPremium || '-'}</td>
+            <td class="px-4 py-3 whitespace-nowrap">${lead.assignedCSR}</td>
+            <td class="px-4 py-3 whitespace-nowrap">${lead.policyNumber}</td>
+            <td class="px-4 py-3 whitespace-nowrap">${lead.clientName}</td>
+            <td class="px-4 py-3 whitespace-nowrap">${lead.policyType}</td>
+            <td class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClass(lead.pipelineStage)} mt-3">
+                ${lead.pipelineStage}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+// Render Super Admin Pipeline Table (14 columns)
+function renderSuperAdminPipeline() {
+    const tableBody = document.querySelector('#superadmin-section-pipeline table tbody');
+    if (!tableBody) return;
+
+    tableBody.innerHTML = '';
+    globalLeads.forEach(lead => {
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-gray-50 text-sm';
+        row.innerHTML = `
+            <td class="border border-gray-300 px-4 py-2">
+                <span class="px-2 py-1 rounded ${getStatusClass(lead.pipelineStage)} text-xs font-bold">${lead.pipelineStage}</span>
+            </td>
+            <td class="border border-gray-300 px-4 py-2">${formatDate(lead.date)}</td>
+            <td class="border border-gray-300 px-4 py-2">${lead.clientName}</td>
+            <td class="border border-gray-300 px-4 py-2">${lead.requestType}</td>
+            <td class="border border-gray-300 px-4 py-2">${lead.policyType}</td>
+            <td class="border border-gray-300 px-4 py-2">${formatDate(lead.effectiveDate)}</td>
+            <td class="border border-gray-300 px-4 py-2">${formatDate(lead.followUpDate)}</td>
+            <td class="border border-gray-300 px-4 py-2">${lead.assignedCSR}</td>
+            <td class="border border-gray-300 px-4 py-2">${lead.referral}</td>
+            <td class="border border-gray-300 px-4 py-2">${lead.policyNumber}</td>
+            <td class="border border-gray-300 px-4 py-2">${lead.boundPremium}</td>
+            <td class="border border-gray-300 px-4 py-2">${lead.expectedCommission}</td>
+            <td class="border border-gray-300 px-4 py-2">${lead.actualCommission}</td>
+            <td class="border border-gray-300 px-4 py-2 max-w-xs truncate">${lead.notes}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+// Render Accounting Leads Table (10 columns)
+function renderAccountingLeads() {
+    const tableBody = document.querySelector('#accounting-section-reports table tbody');
+    if (!tableBody) return;
+
+    tableBody.innerHTML = '';
+    let totalComm = 0;
+    let paidCount = 0;
+
+    globalLeads.forEach(lead => {
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-gray-50 text-sm';
+        row.innerHTML = `
+            <td class="border border-gray-300 px-4 py-2">
+                <span class="px-2 py-1 rounded ${getStatusClass(lead.pipelineStage)} text-xs font-bold">${lead.pipelineStage}</span>
+            </td>
+            <td class="border border-gray-300 px-4 py-2">${lead.clientName}</td>
+            <td class="border border-gray-300 px-4 py-2">${lead.policyType}</td>
+            <td class="border border-gray-300 px-4 py-2">${formatDate(lead.effectiveDate)}</td>
+            <td class="border border-gray-300 px-4 py-2">${lead.assignedCSR}</td>
+            <td class="border border-gray-300 px-4 py-2">${lead.referral}</td>
+            <td class="border border-gray-300 px-4 py-2">${lead.policyNumber}</td>
+            <td class="border border-gray-300 px-4 py-2">${lead.boundPremium}</td>
+            <td class="border border-gray-300 px-4 py-2">${lead.expectedCommission}</td>
+            <td class="border border-gray-300 px-4 py-2">${lead.actualCommission}</td>
+        `;
+        tableBody.appendChild(row);
+
+        // Update KPIs
+        if (lead.pipelineStage === 'Completed') {
+            paidCount++;
+            const commStr = lead.actualCommission.replace(/[$,]/g, '');
+            const val = parseFloat(commStr);
+            if (!isNaN(val)) totalComm += val;
+        }
+    });
+
+    // Update Accounting KPI UI
+    const totalCommEl = document.querySelector('#accounting-dashboard .fa-coins').closest('.flex').querySelector('p');
+    const paidPoliciesEl = document.querySelector('#accounting-dashboard .fa-check-double').closest('.flex').querySelector('p');
+    
+    if (totalCommEl) totalCommEl.textContent = '$' + totalComm.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    if (paidPoliciesEl) paidPoliciesEl.textContent = paidCount;
+}
+
+// Add new lead to table (Old function - kept for compatibility but updated to call renderAllLeads)
 function addLeadToTable(name, type, policy, status, followUpDate) {
-  const tableBody = document.querySelector('#csr-section-reports table tbody');
-  if (!tableBody) return;
-
-  const statusClass = getStatusClass(status);
-
-  const newRow = document.createElement('tr');
-  newRow.className = 'hover:bg-gray-50';
-  newRow.innerHTML = `
-    <td class="px-6 py-4 whitespace-nowrap">${name}</td>
-    <td class="px-6 py-4 whitespace-nowrap">${type}</td>
-    <td class="px-6 py-4 whitespace-nowrap">${policy}</td>
-    <td class="px-6 py-4 whitespace-nowrap">
-      <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">${status}</span>
-    </td>
-    <td class="px-6 py-4 whitespace-nowrap">${followUpDate}</td>
-  `;
-
-  tableBody.insertBefore(newRow, tableBody.firstChild);
+    // This is now handled by the form submit directly updating globalLeads
+    renderAllLeads();
 }
 
 // Get CSS class for status badge
@@ -436,29 +689,29 @@ function getStatusClass(status) {
       return 'bg-red-100 text-red-800';
     case 'Quoting in Progress':
     case 'Consent Letter Sent':
+    case 'Quote has been Emailed':
     case 'Quote Has been Emailed':
       return 'bg-purple-100 text-purple-800';
+    case 'Lead Capture':
+      return 'bg-yellow-400 text-white';
+    case 'Document Collection':
+      return 'bg-blue-400 text-white';
+    case 'Completed':
     case 'Completed (Same)':
     case 'Completed (Switch)':
-      return 'bg-green-100 text-green-800';
+      return 'bg-green-500 text-white';
+    case 'Did not bind':
+    case 'Did not Bind':
+      return 'bg-red-500 text-white';
     default:
       return 'bg-gray-100 text-gray-800';
   }
 }
 
-// Update lead status in table
+// Update lead status in table (Old function - kept for compatibility but updated to call renderAllLeads)
 function updateLeadStatus(leadId, newStatus) {
-  // Target the Pipeline (Reports) table
-  const tableRows = document.querySelectorAll('#csr-section-reports table tbody tr');
-  if (tableRows.length < leadId) return;
-
-  const row = tableRows[leadId - 1];
-  const statusCell = row.querySelector('td:nth-child(4)');
-  const statusBadge = statusCell.querySelector('span');
-
-  // Update status text and class
-  statusBadge.textContent = newStatus;
-  statusBadge.className = `px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClass(newStatus)}`;
+    // This is now handled by the form submit directly updating globalLeads
+    renderAllLeads();
 }
 
 // Update Dashboard internal view (Dashboard, Charts, Reports)
@@ -495,12 +748,19 @@ function showDashboard(role) {
   csrDashboard.style.display = 'none';
   adminDashboard.style.display = 'none';
   superadminDashboard.style.display = 'none';
+  if (accountingDashboard) accountingDashboard.style.display = 'none';
   document.getElementById('in-progress-section').style.display = 'none';
 
   // Hide pipeline navigation item by default
   const pipelineNav = document.getElementById('pipeline-nav');
   if (pipelineNav) {
     pipelineNav.classList.add('hidden');
+  }
+
+  // Hide accounting navigation item by default
+  const accountingNav = document.getElementById('accounting-nav');
+  if (accountingNav) {
+    accountingNav.classList.add('hidden');
   }
 
   // Hide commission navigation item by default
@@ -513,6 +773,13 @@ function showDashboard(role) {
   const inProgressNav = document.getElementById('in-progress-nav');
   if (inProgressNav) {
     inProgressNav.classList.add('hidden');
+  }
+
+  // Handle charts link visibility
+  const chartsNav = document.querySelector('[data-section="charts"]');
+  if (chartsNav) {
+    if (role === 'accounting') chartsNav.classList.add('hidden');
+    else chartsNav.classList.remove('hidden');
   }
 
   if (role === 'csr') {
@@ -538,11 +805,21 @@ function showDashboard(role) {
     if (commissionNav) {
       commissionNav.classList.remove('hidden');
     }
+  } else if (role === 'accounting') {
+    if (accountingDashboard) accountingDashboard.style.display = 'block';
+    updateDashboardView('accounting', 'dashboard'); // Default view
+
+    // Show accounting navigation item only for accounting
+    const accountingNav = document.getElementById('accounting-nav');
+    if (accountingNav) {
+      accountingNav.classList.remove('hidden');
+    }
   }
 }
 
 // Update date and time display
 function updateDateTime() {
+  if (!currentDateTime) return;
   const now = new Date();
   const options = {
     weekday: 'short',
@@ -553,6 +830,15 @@ function updateDateTime() {
     minute: '2-digit'
   };
   currentDateTime.textContent = now.toLocaleDateString('en-US', options);
+}
+
+// Format date for display
+function formatDate(dateString) {
+  if (!dateString || dateString === '-') return '-';
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return dateString;
+  const options = { month: 'short', day: 'numeric', year: 'numeric' };
+  return date.toLocaleDateString('en-US', options);
 }
 
 // Initialize all charts
